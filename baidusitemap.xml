@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+    
+    
+    
+  <url>
+    <loc>http://rainyleo.com/2016/08/13/%E5%BF%AB%E6%8D%B7%E9%94%AE/</loc>
+    <lastmod>2016-11-04T04:32:32.000Z</lastmod>
+    <data>
+        <display>
+        <title>Atom快捷键(Mac)</title>
+        <pubTime>2016-08-13T12:30:13.000Z</pubTime>
+        
+        <tag>atom</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://rainyleo.com/2016/10/28/redux%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB(%E4%B8%80)-createStore/</loc>
+    <lastmod>2016-11-04T04:31:44.000Z</lastmod>
+    <data>
+        <display>
+        <title>redux源码解读(一)-createStore</title>
+        <pubTime>2016-10-28T11:51:59.000Z</pubTime>
+        
+        <tag>JavaScript</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://rainyleo.com/2016/10/29/redux%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB(%E4%BA%8C)-combineReducers/</loc>
+    <lastmod>2016-11-04T04:31:26.000Z</lastmod>
+    <data>
+        <display>
+        <title>redux源码解读(二)-combineReducers</title>
+        <pubTime>2016-10-29T00:27:31.000Z</pubTime>
+        
+        <tag>JavaScript</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://rainyleo.com/2016/10/29/redux%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB(%E4%B8%89)-bindActionCreators/</loc>
+    <lastmod>2016-11-04T04:31:04.000Z</lastmod>
+    <data>
+        <display>
+        <title>redux源码解读(三)-bindActionCreators</title>
+        <pubTime>2016-10-29T09:52:01.000Z</pubTime>
+        
+        <tag>JavaScript</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://rainyleo.com/2016/10/30/redux%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB(%E5%9B%9B)-compose/</loc>
+    <lastmod>2016-11-04T04:30:47.000Z</lastmod>
+    <data>
+        <display>
+        <title>redux源码解读(四)-compose</title>
+        <pubTime>2016-10-30T12:52:01.000Z</pubTime>
+        
+        <tag>JavaScript</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://rainyleo.com/2016/11/01/redux%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB(%E4%BA%94)-applyMiddleware/</loc>
+    <lastmod>2016-11-04T04:30:20.000Z</lastmod>
+    <data>
+        <display>
+        <title>redux源码解读(五)-applyMiddleware</title>
+        <pubTime>2016-11-01T09:48:51.000Z</pubTime>
+        
+        <tag>JavaScript</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://rainyleo.com/2016/10/02/Javascript-promise/</loc>
+    <lastmod>2016-11-04T04:29:18.000Z</lastmod>
+    <data>
+        <display>
+        <title>JavaScript Promise</title>
+        <pubTime>2016-10-02T12:22:42.000Z</pubTime>
+        
+        <tag>JavaScript</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://rainyleo.com/2016/09/13/Array-methods/</loc>
+    <lastmod>2016-11-04T04:28:55.000Z</lastmod>
+    <data>
+        <display>
+        <title>JavaScript中数组迭代方法的简单实现</title>
+        <pubTime>2016-09-13T09:41:54.000Z</pubTime>
+        
+        <tag>JavaScript</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://rainyleo.com/2016/09/02/JavaScript-Object-Methods/</loc>
+    <lastmod>2016-11-04T04:28:35.000Z</lastmod>
+    <data>
+        <display>
+        <title>一张图看明白JavaScript中对象的方法</title>
+        <pubTime>2016-09-02T11:28:35.000Z</pubTime>
+        
+        <tag>JavaScript</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://rainyleo.com/2016/10/14/React-component-pattern/</loc>
+    <lastmod>2016-11-04T04:27:45.000Z</lastmod>
+    <data>
+        <display>
+        <title>React中的组件分类</title>
+        <pubTime>2016-10-14T02:51:08.000Z</pubTime>
+        
+        <tag>React</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+    
+</urlset>
