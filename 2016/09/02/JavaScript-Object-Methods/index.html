@@ -67,73 +67,50 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-JavaScript-Object-Methods" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/09/02/JavaScript-Object-Methods/" class="article-date">
-  <time datetime="2016-09-02T11:28:35.000Z" itemprop="datePublished">2016-09-02</time>
-</a>
-    
+    <%- partial('post/date', {class_name: 'article-date', date_format: null}) %>
+    <%- partial('post/category') %>
   </div>
   <div class="article-inner">
-    
-    
+    <%- partial('post/gallery') %>
+    <% if (post.link || post.title){ %>
       <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      一张图看明白JavaScript中对象的方法
-    </h1>
-  
-
+        <%- partial('post/title', {class_name: 'article-title'}) %>
       </header>
-    
+    <% } %>
     <div class="article-entry" itemprop="articleBody">
-      
-        <p>JavaScript 的对象有很多方法容易弄混淆, 下面用一张PPT进行整理如下:<br><a id="more"></a><br><img src="/images/object.jpg" alt="Object Methods"></p>
-
-      
+      <% if (post.excerpt && index){ %>
+        <%- post.excerpt %>
+        <% if (theme.excerpt_link){ %>
+          <p class="article-more-link">
+            <a href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %></a>
+          </p>
+        <% } %>
+      <% } else { %>
+        <%- post.content %>
+      <% } %>
     </div>
     <footer class="article-footer">
-      <a data-url="http://rainyleo.com/2016/09/02/JavaScript-Object-Methods/" data-id="civ4219ne0002rt1nhjrfgevt" class="article-share-link">Share</a>
-      
-        <a href="http://rainyleo.com/2016/09/02/JavaScript-Object-Methods/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
-
+      <a data-url="<%- post.permalink %>" data-id="<%= post._id %>" class="article-share-link"><%= __('share') %></a>
+      <% if (post.comments && config.disqus_shortname){ %>
+        <a href="<%- post.permalink %>#disqus_thread" class="article-comment-link"><%= __('comment') %></a>
+      <% } %>
+      <%- partial('post/tag') %>
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2016/09/13/Array-methods/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          JavaScript中数组迭代方法的简单实现
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2016/08/13/快捷键/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Atom快捷键(Mac)</div>
-    </a>
-  
-</nav>
-
-  
+  <% if (!index){ %>
+    <%- partial('post/nav') %>
+  <% } %>
 </article>
 
-
+<% if (!index && post.comments && config.disqus_shortname){ %>
 <section id="comments">
   <div id="disqus_thread">
     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
   </div>
 </section>
-</section>
+<% } %></section>
         
           <aside id="sidebar">
   
@@ -223,20 +200,6 @@
   
 </nav>
     
-<script>
-  var disqus_shortname = 'rainyleocom';
-  
-  var disqus_url = 'http://rainyleo.com/2016/09/02/JavaScript-Object-Methods/';
-  
-  (function(){
-    var dsq = document.createElement('script');
-    dsq.type = 'text/javascript';
-    dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-</script>
-
 
 <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
 

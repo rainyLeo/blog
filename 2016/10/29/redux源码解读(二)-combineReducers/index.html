@@ -80,79 +80,50 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-redux源码解读(二)-combineReducers" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/10/29/redux源码解读(二)-combineReducers/" class="article-date">
-  <time datetime="2016-10-29T00:27:31.000Z" itemprop="datePublished">2016-10-29</time>
-</a>
-    
+    <%- partial('post/date', {class_name: 'article-date', date_format: null}) %>
+    <%- partial('post/category') %>
   </div>
   <div class="article-inner">
-    
-    
+    <%- partial('post/gallery') %>
+    <% if (post.link || post.title){ %>
       <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      redux源码解读(二)-combineReducers
-    </h1>
-  
-
+        <%- partial('post/title', {class_name: 'article-title'}) %>
       </header>
-    
+    <% } %>
     <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
-<li>函数参数, 接收一个包含几个不同reducer函数的对象 </li>
-<li>返回值, 返回一个合并的reducer.   </li>
-</ul>
-<p>当这个合并的<code>reducer</code>接收到<code>action</code>时, 会调用每一个子<code>reducer</code>, 把它们的结果放到一个<code>state</code>对象中, state 对象的属性对应各自 reducer 中的 state </p>
-<h2 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h2><a id="more"></a>  
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">combineReducers</span>(<span class="params">reducers</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> reducerKeys = <span class="built_in">Object</span>.keys(reducers)</div><div class="line">  <span class="keyword">var</span> finalReducers = &#123;&#125;</div><div class="line">  <span class="comment">// 用循环把reducers中的每一项复制到finalReducers对象中</span></div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; reducerKeys.length; i++) &#123;</div><div class="line">    <span class="keyword">var</span> key = reducerKeys[i]</div><div class="line">    <span class="comment">// 判断node环境, 非生产环境时当传入的reducer不存在时进行警告</span></div><div class="line">    <span class="keyword">if</span> (NODE_ENV !== <span class="string">'production'</span>) &#123;</div><div class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> reducers[key] === <span class="string">'undefined'</span>) &#123;</div><div class="line">        warning(<span class="string">`No reducer provided for key "<span class="subst">$&#123;key&#125;</span>"`</span>)</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 检查reudcer为函数时, 复制该reducer到finalReducers </span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> reducers[key] === <span class="string">'function'</span>) &#123;</div><div class="line">      finalReducers[key] = reducers[key]</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// 保存finalReducers的属性名</span></div><div class="line">  <span class="comment">// Object.keys()返回对象中可枚举的自有的属性名</span></div><div class="line">  <span class="keyword">var</span> finalReducerKeys = <span class="built_in">Object</span>.keys(finalReducers)</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (NODE_ENV !== <span class="string">'production'</span>) &#123;</div><div class="line">    <span class="keyword">var</span> unexpectedKeyCache = &#123;&#125;</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// assertReducerSanity函数会检查reducer的返回值, 如果返回的state为undefined会报错</span></div><div class="line">  <span class="comment">// 因此reducer一定要有一个default语句返回原state</span></div><div class="line">  <span class="keyword">var</span> sanityError</div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    assertReducerSanity(finalReducers)</div><div class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</div><div class="line">    sanityError = e</div><div class="line">  &#125;</div><div class="line">  <span class="comment">/* 第二部分, 返回一个合并的reducer函数 */</span></div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">combination</span>(<span class="params">state = &#123;&#125;, action</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (sanityError) &#123;</div><div class="line">      <span class="keyword">throw</span> sanityError</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 参数检查, finalReducerKeys()的length不能为0, state应该为plain object</span></div><div class="line">    <span class="keyword">if</span> (NODE_ENV !== <span class="string">'production'</span>) &#123;</div><div class="line">      <span class="keyword">var</span> warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action, unexpectedKeyCache)</div><div class="line">      <span class="keyword">if</span> (warningMessage) &#123;</div><div class="line">        warning(warningMessage)</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> hasChanged = <span class="literal">false</span></div><div class="line">    <span class="keyword">var</span> nextState = &#123;&#125;</div><div class="line">    <span class="comment">// 循环中调用每一个reducer, 得到新的state</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; finalReducerKeys.length; i++) &#123;</div><div class="line">      <span class="keyword">var</span> key = finalReducerKeys[i]</div><div class="line">      <span class="keyword">var</span> reducer = finalReducers[key]</div><div class="line">      <span class="keyword">var</span> previousStateForKey = state[key]</div><div class="line">      <span class="comment">// 调用reducer, 得到新的state</span></div><div class="line">      <span class="keyword">var</span> nextStateForKey = reducer(previousStateForKey, action)</div><div class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> nextStateForKey === <span class="string">'undefined'</span>) &#123;</div><div class="line">        <span class="keyword">var</span> errorMessage = getUndefinedStateErrorMessage(key, action)</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(errorMessage)</div><div class="line">      &#125;</div><div class="line">      nextState[key] = nextStateForKey</div><div class="line">      <span class="comment">// 判断state是否改变, 因为reducer为纯函数, 不会修改原state, 可以直接用!==来比较前后state是否相等</span></div><div class="line">      hasChanged = hasChanged || nextStateForKey !== previousStateForKey</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// state改变时返回新的state, 否则返回原state</span></div><div class="line">    <span class="keyword">return</span> hasChanged ? nextState : state</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-      
+      <% if (post.excerpt && index){ %>
+        <%- post.excerpt %>
+        <% if (theme.excerpt_link){ %>
+          <p class="article-more-link">
+            <a href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %></a>
+          </p>
+        <% } %>
+      <% } else { %>
+        <%- post.content %>
+      <% } %>
     </div>
     <footer class="article-footer">
-      <a data-url="http://rainyleo.com/2016/10/29/redux源码解读(二)-combineReducers/" data-id="civ4219nx0009rt1nuwuiul8i" class="article-share-link">Share</a>
-      
-        <a href="http://rainyleo.com/2016/10/29/redux源码解读(二)-combineReducers/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
-
+      <a data-url="<%- post.permalink %>" data-id="<%= post._id %>" class="article-share-link"><%= __('share') %></a>
+      <% if (post.comments && config.disqus_shortname){ %>
+        <a href="<%- post.permalink %>#disqus_thread" class="article-comment-link"><%= __('comment') %></a>
+      <% } %>
+      <%- partial('post/tag') %>
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2016/10/29/redux源码解读(三)-bindActionCreators/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          redux源码解读(三)-bindActionCreators
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2016/10/28/redux源码解读(一)-createStore/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">redux源码解读(一)-createStore</div>
-    </a>
-  
-</nav>
-
-  
+  <% if (!index){ %>
+    <%- partial('post/nav') %>
+  <% } %>
 </article>
 
-
+<% if (!index && post.comments && config.disqus_shortname){ %>
 <section id="comments">
   <div id="disqus_thread">
     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
   </div>
 </section>
-</section>
+<% } %></section>
         
           <aside id="sidebar">
   
@@ -242,20 +213,6 @@
   
 </nav>
     
-<script>
-  var disqus_shortname = 'rainyleocom';
-  
-  var disqus_url = 'http://rainyleo.com/2016/10/29/redux源码解读(二)-combineReducers/';
-  
-  (function(){
-    var dsq = document.createElement('script');
-    dsq.type = 'text/javascript';
-    dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-</script>
-
 
 <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
 
