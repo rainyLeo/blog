@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>rainyleo blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="rainyleo blog">
+<meta property="og:url" content="http://rainyleo.com/index.html">
+<meta property="og:site_name" content="rainyleo blog">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="rainyleo blog">
+  
+    <link rel="alternate" href="/atom.xml" title="rainyleo blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rainyleo blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rainyleo.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-redux源码解读(五)-applyMiddleware" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/03/redux源码解读(五)-applyMiddleware/" class="article-date">
+  <time datetime="2016-11-03T09:48:51.000Z" itemprop="datePublished">2016-11-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/03/redux源码解读(五)-applyMiddleware/">redux源码解读(五)-applyMiddleware</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>applyMiddleware()</code>感觉应该是redux的5个API中最绕人一个了, 它往往作为<code>createStore()</code>的第三个参数<code>enhancer</code>, 那它<code>enhance</code>了什么呢? 答案就是<code>createStore()</code>里面的<code>dispatch</code>函数</p>
+<ul>
+<li><p>函数参数, 参数为包含几个不同<code>middleware</code>的数组或只有一个middleware函数,<br>每个<code>middleware</code>函数会返回一个接收3次参数的柯里化函数, 它有这样的语句<code>return ({ dispatch, getState }) =&gt; next =&gt; action =&gt;</code>, 见最下面的thunk-middleware</p>
+</li>
+<li><p>返回值, 返回一个接收2次参数的函数   </p>
+</li>
+</ul>
+<p>要把<code>applyMiddleware()</code>理解清楚, 需要联系<code>createStore()</code>, 它们会相互调用, 下面两处代码要结合起来看</p>
+<h2 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h2>
+        
+          <p class="article-more-link">
+            <a href="/2016/11/03/redux源码解读(五)-applyMiddleware/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rainyleo.com/2016/11/03/redux源码解读(五)-applyMiddleware/" data-id="civ34kv1m000ajc1nho9r5bso" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-redux源码解读(四)-compose" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/03/redux源码解读(四)-compose/" class="article-date">
+  <time datetime="2016-11-03T08:52:01.000Z" itemprop="datePublished">2016-11-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/03/redux源码解读(四)-compose/">redux源码解读(四)-compose</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>compose这个函数在函数式编程中很常见, 它把一个函数函数的结果传进另一个函数中, 例如<code>compose(f, g, h)(x)</code> 返回 <code>f(g(h(x)))</code></p>
+<p>下面先看一个简化版本的compose以便理解   </p>
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">compose</span>(<span class="params">f, g</span>) </span>{
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>{
+    <span class="keyword">return</span> f.call(<span class="keyword">this</span>, g.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>));
+  };
+  <span class="comment">/* 如果只接收一个参数, 也可以这样写
+  return function(x) {
+    return f(g(x));
+  };
+  */</span>
+}  
+
+<span class="keyword">const</span> square = <span class="function"><span class="params">x</span> =&gt;</span> x * x;
+<span class="keyword">const</span> sum = <span class="function">(<span class="params">x, y</span>) =&gt;</span> x + y;
+<span class="keyword">const</span> res = compose(square, sum);
+res(<span class="number">2</span>, <span class="number">3</span>); <span class="comment">// 25</span>
+</code></pre>
+        
+          <p class="article-more-link">
+            <a href="/2016/11/03/redux源码解读(四)-compose/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rainyleo.com/2016/11/03/redux源码解读(四)-compose/" data-id="civ34kv1q000fjc1nwbksm7ni" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-redux源码解读(三)-bindActionCreators" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/03/redux源码解读(三)-bindActionCreators/" class="article-date">
+  <time datetime="2016-11-03T07:52:01.000Z" itemprop="datePublished">2016-11-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/03/redux源码解读(三)-bindActionCreators/">redux源码解读(三)-bindActionCreators</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+<li><p>函数参数, <code>bindActionCreators</code>接收2个参数, <code>actionCreators</code>和<code>dispatch</code>,<br><code>actionCreators</code>可以是一个函数, 也可以是包含几个函数的对象  </p>
+</li>
+<li><p>返回值, 返回值对应<code>actionCreators</code>这个参数, 当它是函数时, 返回值是一个函数, 这个返回的函数接收一个参数传入<code>actionCreator</code>得到 <code>action</code>, 再调用<code>dispatch</code>; 当它是包含几个函数的对象时, 返回值为包含这几个函数调用结果的对象</p>
+</li>
+</ul>
+<p><code>bindActionCreators()</code> 是函数式编程中的组合函数<code>compose</code>,  在下一篇的compose中会提到, 组合函数形如<br><code>compose(f, g)(...args) --&gt; g(f(...args))</code>, 在这里<code>f</code>和<code>g</code>分别为参数<code>actionCreator</code>和<code>dispatch</code> </p>
+<h2 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h2>
+        
+          <p class="article-more-link">
+            <a href="/2016/11/03/redux源码解读(三)-bindActionCreators/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rainyleo.com/2016/11/03/redux源码解读(三)-bindActionCreators/" data-id="civ34kv1h0005jc1n0smlghdu" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-redux源码解读(二)-combineReducers" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/03/redux源码解读(二)-combineReducers/" class="article-date">
+  <time datetime="2016-11-03T07:27:31.000Z" itemprop="datePublished">2016-11-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/03/redux源码解读(二)-combineReducers/">redux源码解读(二)-combineReducers</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+<li>函数参数, 接收一个包含几个不同reducer函数的对象 </li>
+<li>返回值, 返回一个合并的reducer.   </li>
+</ul>
+<p>当这个合并的<code>reducer</code>接收到<code>action</code>时, 会调用每一个子<code>reducer</code>, 把它们的结果放到一个<code>state</code>对象中, state 对象的属性对应各自 reducer 中的 state </p>
+<h2 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h2>
+        
+          <p class="article-more-link">
+            <a href="/2016/11/03/redux源码解读(二)-combineReducers/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rainyleo.com/2016/11/03/redux源码解读(二)-combineReducers/" data-id="civ34kv1p000djc1ntjgqefxz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-redux源码解读(一)-createStore" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/03/redux源码解读(一)-createStore/" class="article-date">
+  <time datetime="2016-11-03T06:51:59.000Z" itemprop="datePublished">2016-11-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/03/redux源码解读(一)-createStore/">redux源码解读(一)-createStore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Redux一共有5个公共方法, 先说第一个<code>createStore()</code>  </p>
+<ul>
+<li>函数参数, 可以接收3个参数, <code>reducer</code>, <code>preloadedState</code>, <code>enhancer</code>, 后两个是可选的</li>
+<li><p>返回值, 返回一个object, 它包含4个公有方法, 分别为<code>getStore()</code>, <code>subscribe(listener)</code>, <code>dispatch(action)</code>, <code>replaceReducer(nextReducer)</code>  </p>
+<p>createStore函数使用了设计模式中的暴露模块模式(Revealing Module Pattern)</p>
+</li>
+</ul>
+<h2 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h2>
+        
+          <p class="article-more-link">
+            <a href="/2016/11/03/redux源码解读(一)-createStore/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rainyleo.com/2016/11/03/redux源码解读(一)-createStore/" data-id="civ34kv1f0004jc1ng08pyyf1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Javascript-promise" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/02/Javascript-promise/" class="article-date">
+  <time datetime="2016-11-02T12:22:42.000Z" itemprop="datePublished">2016-11-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/02/Javascript-promise/">JavaScript Promise</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>A promise is a placeholder for the result of an asynchronous operation. Instead of subscribing to an event or passing a callback to a function, the function can return a promise</p>
+<h2 id="Syntax"><a href="#Syntax" class="headerlink" title="Syntax"></a>Syntax</h2><p><code>new Promise( /* executor */ function(resolve, reject) { ... } );</code> </p>
+<p><strong>Parameters: executor</strong></p>
+<p>A function that is passed the arguments resolve and reject. The executor function is executed immediately by the Promise implementation, passing <code>resolve</code> and <code>reject</code> functions (the executor is called before the Promise constructor even returns the created object). The resolve and reject functions, when called, resolve or reject the promise respectively. The executor normally initiates some asynchronous work and then, once that completes, calls either the resolve or reject function to resolve the promise or else reject it if an error occurred</p>
+<p>Calling <code>resolve()</code> triggers an asynchronous operation. Functions passed to <code>then()</code> and <code>catch()</code> are executed asynchronously, because these are also added to the <code>job queue</code></p>
+<p>Each call to <code>then()</code> or <code>catch()</code> actually creates and returns another promise. This second promise is resolved only when the first has been fulfilled or rejected<br>
+        
+          <p class="article-more-link">
+            <a href="/2016/11/02/Javascript-promise/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rainyleo.com/2016/11/02/Javascript-promise/" data-id="civ34kv190001jc1ndalhvx5a" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-JavaScript-Object-Methods" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/01/JavaScript-Object-Methods/" class="article-date">
+  <time datetime="2016-11-01T11:28:35.000Z" itemprop="datePublished">2016-11-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/01/JavaScript-Object-Methods/">一张图看明白JavaScript中对象的方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>JavaScript 的对象有很多方法容易弄混淆, 下面用一张PPT进行整理如下:<br>
+        
+          <p class="article-more-link">
+            <a href="/2016/11/01/JavaScript-Object-Methods/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rainyleo.com/2016/11/01/JavaScript-Object-Methods/" data-id="civ34kv1e0003jc1ndho22dvz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Array-methods" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/10/23/Array-methods/" class="article-date">
+  <time datetime="2016-10-23T09:41:54.000Z" itemprop="datePublished">2016-10-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/23/Array-methods/">JavaScript中数组迭代方法的简单实现</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>JavaScript 中数组迭代方法的简化实现  </p>
+<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><pre><code class="js"><span class="built_in">Array</span>.prototype.map = <span class="function"><span class="keyword">function</span>(<span class="params">fn <span class="regexp">/*, thisArg*/</span></span>) </span>{
+  <span class="keyword">var</span> res = [];
+  <span class="keyword">var</span> thisArg;
+  <span class="keyword">if</span> (<span class="keyword">this</span> == <span class="literal">null</span>) {
+    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'Array.prototype.map2 called on null or undefined'</span>);
+  }
+  <span class="keyword">if</span> (<span class="keyword">typeof</span> fn !== <span class="string">'function'</span>) {
+    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(fn + <span class="string">' is not a function'</span>);
+  }
+  <span class="keyword">if</span> (<span class="built_in">arguments</span>.length &gt; <span class="number">1</span>) {
+    thisArg = <span class="built_in">arguments</span>[<span class="number">1</span>];
+  }
+
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.length; i++) {
+    <span class="keyword">if</span> (i <span class="keyword">in</span> <span class="keyword">this</span>) {
+      res.push(fn.call(thisArg, <span class="keyword">this</span>[i], i, <span class="keyword">this</span>));
+    }
+  }
+  <span class="keyword">return</span> res;
+};
+</code></pre>
+        
+          <p class="article-more-link">
+            <a href="/2016/10/23/Array-methods/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rainyleo.com/2016/10/23/Array-methods/" data-id="civ34kv150000jc1n4a9d07fc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-快捷键" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/09/13/快捷键/" class="article-date">
+  <time datetime="2016-09-13T12:30:13.000Z" itemprop="datePublished">2016-09-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/13/快捷键/">Atom快捷键(Mac)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Atom快捷键整理 </p>
+<h2 id="光标移动"><a href="#光标移动" class="headerlink" title="光标移动"></a>光标移动</h2><p><code>ctrl-p</code> 上<br><code>ctrl-n</code> 下<br><code>ctrl-f</code> 左<br><code>ctrl-b</code> 右<br><code>ctrl-e</code> 移动至一行结尾<br><code>ctrl-a</code> 移动到一行开头<br><code>alt-b</code> <code>ctrl-j</code> 移动到单词开头<br><code>alt-f</code>  <code>ctrl-l</code> 移动到单词结尾<br><code>cmd-up</code> 移动到文件开头<br><code>cmd-down</code> 移动到文件结束<br><code>ctrl-g</code> 移动到指定行<br><code>cmd-r</code> 在函数之间跳转<br>
+        
+          <p class="article-more-link">
+            <a href="/2016/09/13/快捷键/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rainyleo.com/2016/09/13/快捷键/" data-id="civ34kv1l0008jc1ndz7yz04m" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/atom/">atom</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/atom/">atom</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/atom/" style="font-size: 10px;">atom</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/11/03/redux源码解读(五)-applyMiddleware/">redux源码解读(五)-applyMiddleware</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/03/redux源码解读(四)-compose/">redux源码解读(四)-compose</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/03/redux源码解读(三)-bindActionCreators/">redux源码解读(三)-bindActionCreators</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/03/redux源码解读(二)-combineReducers/">redux源码解读(二)-combineReducers</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/03/redux源码解读(一)-createStore/">redux源码解读(一)-createStore</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 rainyLeo<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

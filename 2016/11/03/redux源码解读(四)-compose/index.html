@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>redux源码解读(四)-compose | rainyleo blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="概述compose这个函数在函数式编程中很常见, 它把一个函数函数的结果传进另一个函数中, 例如compose(f, g, h)(x) 返回 f(g(h(x)))
+下面先看一个简化版本的compose以便理解   
+function compose(f, g) {
+  return function() {
+    return f.call(this, g.apply(this, argumen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redux源码解读(四)-compose">
+<meta property="og:url" content="http://rainyleo.com/2016/11/03/redux源码解读(四)-compose/index.html">
+<meta property="og:site_name" content="rainyleo blog">
+<meta property="og:description" content="概述compose这个函数在函数式编程中很常见, 它把一个函数函数的结果传进另一个函数中, 例如compose(f, g, h)(x) 返回 f(g(h(x)))
+下面先看一个简化版本的compose以便理解   
+function compose(f, g) {
+  return function() {
+    return f.call(this, g.apply(this, argumen">
+<meta property="og:updated_time" content="2016-11-03T09:22:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redux源码解读(四)-compose">
+<meta name="twitter:description" content="概述compose这个函数在函数式编程中很常见, 它把一个函数函数的结果传进另一个函数中, 例如compose(f, g, h)(x) 返回 f(g(h(x)))
+下面先看一个简化版本的compose以便理解   
+function compose(f, g) {
+  return function() {
+    return f.call(this, g.apply(this, argumen">
+  
+    <link rel="alternate" href="/atom.xml" title="rainyleo blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rainyleo blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rainyleo.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-redux源码解读(四)-compose" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/03/redux源码解读(四)-compose/" class="article-date">
+  <time datetime="2016-11-03T08:52:01.000Z" itemprop="datePublished">2016-11-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      redux源码解读(四)-compose
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>compose这个函数在函数式编程中很常见, 它把一个函数函数的结果传进另一个函数中, 例如<code>compose(f, g, h)(x)</code> 返回 <code>f(g(h(x)))</code></p>
+<p>下面先看一个简化版本的compose以便理解   </p>
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">compose</span>(<span class="params">f, g</span>) </span>{
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>{
+    <span class="keyword">return</span> f.call(<span class="keyword">this</span>, g.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>));
+  };
+  <span class="comment">/* 如果只接收一个参数, 也可以这样写
+  return function(x) {
+    return f(g(x));
+  };
+  */</span>
+}  
+
+<span class="keyword">const</span> square = <span class="function"><span class="params">x</span> =&gt;</span> x * x;
+<span class="keyword">const</span> sum = <span class="function">(<span class="params">x, y</span>) =&gt;</span> x + y;
+<span class="keyword">const</span> res = compose(square, sum);
+res(<span class="number">2</span>, <span class="number">3</span>); <span class="comment">// 25</span>
+</code></pre>
+<a id="more"></a>  
+<h2 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h2><p>下面是redux中的compose   </p>
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">compose</span>(<span class="params">...funcs</span>) </span>{
+  <span class="comment">// 没有传入函数时直接返回参数</span>
+  <span class="keyword">if</span> (funcs.length === <span class="number">0</span>) {
+    <span class="keyword">return</span> <span class="function"><span class="params">arg</span> =&gt;</span> arg;
+  }
+  <span class="comment">// 只有一个函数时直接返回该函数</span>
+  <span class="keyword">if</span> (funcs.length === <span class="number">1</span>) {
+    <span class="keyword">return</span> funcs[<span class="number">0</span>];
+  }
+
+  <span class="keyword">const</span> last = funcs[funcs.length - <span class="number">1</span>];
+  <span class="comment">// slice(0, -1)得到数组中除了最后一个的剩下的部分</span>
+  <span class="keyword">const</span> rest = funcs.slice(<span class="number">0</span>, <span class="number">-1</span>);
+  <span class="comment">// reduceRight从数组的最右边开始, 从右往左依次把上一个函数执行的结果传入下一个, 最后返回最左边函数的结果</span>
+  <span class="keyword">return</span> <span class="function">(<span class="params">...args</span>) =&gt;</span> rest.reduceRight(<span class="function">(<span class="params">composed, f</span>) =&gt;</span> f(composed), last(...args));
+}
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rainyleo.com/2016/11/03/redux源码解读(四)-compose/" data-id="civ34kv1q000fjc1nwbksm7ni" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/03/redux源码解读(五)-applyMiddleware/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          redux源码解读(五)-applyMiddleware
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/03/redux源码解读(三)-bindActionCreators/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">redux源码解读(三)-bindActionCreators</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/atom/">atom</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/atom/" style="font-size: 10px;">atom</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/11/03/redux源码解读(五)-applyMiddleware/">redux源码解读(五)-applyMiddleware</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/03/redux源码解读(四)-compose/">redux源码解读(四)-compose</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/03/redux源码解读(三)-bindActionCreators/">redux源码解读(三)-bindActionCreators</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/03/redux源码解读(二)-combineReducers/">redux源码解读(二)-combineReducers</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/03/redux源码解读(一)-createStore/">redux源码解读(一)-createStore</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 rainyLeo<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
