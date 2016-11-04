@@ -74,50 +74,93 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-redux源码解读(一)-createStore" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <%- partial('post/date', {class_name: 'article-date', date_format: null}) %>
-    <%- partial('post/category') %>
+    <a href="/2016/10/28/redux源码解读(一)-createStore/" class="article-date">
+  <time datetime="2016-10-28T11:51:59.000Z" itemprop="datePublished">2016-10-28</time>
+</a>
+    
   </div>
   <div class="article-inner">
-    <%- partial('post/gallery') %>
-    <% if (post.link || post.title){ %>
+    
+    
       <header class="article-header">
-        <%- partial('post/title', {class_name: 'article-title'}) %>
+        
+  
+    <h1 class="article-title" itemprop="name">
+      redux源码解读(一)-createStore
+    </h1>
+  
+
       </header>
-    <% } %>
+    
     <div class="article-entry" itemprop="articleBody">
-      <% if (post.excerpt && index){ %>
-        <%- post.excerpt %>
-        <% if (theme.excerpt_link){ %>
-          <p class="article-more-link">
-            <a href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %></a>
-          </p>
-        <% } %>
-      <% } else { %>
-        <%- post.content %>
-      <% } %>
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Redux一共有5个公共方法, 先说第一个<code>createStore()</code>  </p>
+<ul>
+<li>函数参数, 可以接收3个参数, <code>reducer</code>, <code>preloadedState</code>, <code>enhancer</code>, 后两个是可选的</li>
+<li><p>返回值, 返回一个object, 它包含4个公有方法, 分别为<code>getStore()</code>, <code>subscribe(listener)</code>, <code>dispatch(action)</code>, <code>replaceReducer(nextReducer)</code>  </p>
+<p>createStore函数使用了设计模式中的暴露模块模式(Revealing Module Pattern)</p>
+</li>
+</ul>
+<h2 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h2> <a id="more"></a>  
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createStore</span>(<span class="params">reducer, preloadedState, enhancer</span>) </span>&#123;</div><div class="line">  <span class="comment">/* 第一部分, 参数判断, preloadedState可以指定初始的state, enhancer为函数类型 */</span></div><div class="line"></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> preloadedState === <span class="string">'function'</span> &amp;&amp; <span class="keyword">typeof</span> enhancer === <span class="string">'undefined'</span>) &#123;</div><div class="line">    <span class="comment">// 如果只传递2个参数而且第二个参数是函数的话, 把第二个参数赋值给变量enhancer</span></div><div class="line">    enhancer = preloadedState;</div><div class="line">    preloadedState = <span class="literal">undefined</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> enhancer !== <span class="string">'undefined'</span>) &#123;</div><div class="line">    <span class="comment">// 如果有3个参数, 但第三个参数enhancer不是函数的话, 抛出错误</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> enhancer !== <span class="string">'function'</span>) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected the enhancer to be a function.'</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 到这里时createStore的参数数量可能是2个(上面那种情况), 也可能是3个, 所以preloadedState的值可能存在或为undefined</span></div><div class="line">    <span class="comment">// 调用 enhancer 并返回, (下面这行代码在另一个API applyMiddleware() 里会用到)</span></div><div class="line">    <span class="keyword">return</span> enhancer(createStore)(reducer, preloadedState);</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// 如果reducer不是函数类型抛出错误</span></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> reducer !== <span class="string">'function'</span>) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected the reducer to be a function.'</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line"><span class="comment">/* 第二部分 定义私有变量和方法 */</span></div><div class="line"></div><div class="line">  <span class="keyword">var</span> currentReducer = reducer;</div><div class="line">  <span class="keyword">var</span> currentState = preloadedState;</div><div class="line">  <span class="keyword">var</span> currentListeners = [];</div><div class="line">  <span class="keyword">var</span> nextListeners = currentListeners;</div><div class="line">  <span class="keyword">var</span> isDispatching = <span class="literal">false</span>;</div><div class="line"></div><div class="line">  <span class="comment">// 对原listeners数组做了一次拷贝 确保不会修改原listeners数组</span></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">ensureCanMutateNextListeners</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (nextListeners === currentListeners) &#123;</div><div class="line">      nextListeners = currentListeners.slice();</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// store的第一个方法, state作为私有属性, 只能通过getState()来访问, 确保state不会被无故修改</span></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">getState</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> currentState;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// store的第二个方法</span></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">subscribe</span>(<span class="params">listener</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> listener !== <span class="string">'function'</span>) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected listener to be a function.'</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> isSubscribed = <span class="literal">true</span>;</div><div class="line"></div><div class="line">    ensureCanMutateNextListeners();</div><div class="line">    <span class="comment">// 把当前的参数listener放入数组</span></div><div class="line">    nextListeners.push(listener);</div><div class="line">    <span class="comment">// 返回一个函数, 当该函数被调用时会从数组里删除当前的listener</span></div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">unsubscribe</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="keyword">if</span> (!isSubscribed) &#123;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">      &#125;</div><div class="line">      isSubscribed = <span class="literal">false</span>;</div><div class="line">      ensureCanMutateNextListeners();</div><div class="line"></div><div class="line">      <span class="keyword">var</span> index = nextListeners.indexOf(listener);</div><div class="line">      nextListeners.splice(index, <span class="number">1</span>);</div><div class="line">    &#125;;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// store的第三个方法</span></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">dispatch</span>(<span class="params">action</span>) </span>&#123;</div><div class="line">    <span class="comment">// 确保action是通过&#123;&#125;或new Object()定义的对象</span></div><div class="line">    <span class="keyword">if</span> (!isPlainObject(action)) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(</div><div class="line">        <span class="string">'Actions must be plain objects. '</span> +</div><div class="line">        <span class="string">'Use custom middleware for async actions.'</span></div><div class="line">      );</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// action必须要有一个type属性, 否则报错</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> action.type === <span class="string">'undefined'</span>) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(</div><div class="line">        <span class="string">'Actions may not have an undefined "type" property. '</span> +</div><div class="line">        <span class="string">'Have you misspelled a constant?'</span></div><div class="line">      );</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (isDispatching) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Reducers may not dispatch actions.'</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      isDispatching = <span class="literal">true</span>;</div><div class="line">      <span class="comment">// 调用reducer, 传入当前state 和 action 得到新的 state  </span></div><div class="line">      currentState = currentReducer(currentState, action);</div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">      isDispatching = <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// listeners数组的每个listener都执行一次</span></div><div class="line">    <span class="keyword">var</span> listeners = currentListeners = nextListeners;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; listeners.length; i++) &#123;</div><div class="line">      listeners[i]();</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 返回原action</span></div><div class="line">    <span class="keyword">return</span> action;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// store的第四个方法, 替换reducer</span></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">replaceReducer</span>(<span class="params">nextReducer</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> nextReducer !== <span class="string">'function'</span>) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected the nextReducer to be a function.'</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    currentReducer = nextReducer;</div><div class="line">    dispatch(&#123; <span class="attr">type</span>: ActionTypes.INIT &#125;);</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// 执行一次dispatch, reducer返回它们自己的初始state, 从而初始化store的state</span></div><div class="line">  dispatch(&#123; <span class="attr">type</span>: ActionTypes.INIT &#125;);</div><div class="line"></div><div class="line"></div><div class="line">  <span class="comment">/* 第三部分: 返回值, 返回一个包含4个公有方法的对象, 这4个方法都是闭包, 可以一直保持对私有变量的访问. */</span></div><div class="line"></div><div class="line">  <span class="comment">// 这里用的ES6的写法, 相当于dispatch: dispatch, 把dispatch函数作为属性值, dispatch变量名作为属性名</span></div><div class="line">  <span class="comment">// 这4个方法都为createStore()函数的返回值的属性, 所以可以用store.dispatch()来调用 </span></div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    dispatch,</div><div class="line">    subscribe,</div><div class="line">    getState,</div><div class="line">    replaceReducer,</div><div class="line">  &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
     </div>
     <footer class="article-footer">
-      <a data-url="<%- post.permalink %>" data-id="<%= post._id %>" class="article-share-link"><%= __('share') %></a>
-      <% if (post.comments && config.disqus_shortname){ %>
-        <a href="<%- post.permalink %>#disqus_thread" class="article-comment-link"><%= __('comment') %></a>
-      <% } %>
-      <%- partial('post/tag') %>
+      <a data-url="http://rainyleo.com/2016/10/28/redux源码解读(一)-createStore/" data-id="civ438jdw000dag1nds7vcm4a" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
     </footer>
   </div>
-  <% if (!index){ %>
-    <%- partial('post/nav') %>
-  <% } %>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/10/29/redux源码解读(二)-combineReducers/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          redux源码解读(二)-combineReducers
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/10/14/React-component-pattern/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">React中的组件分类</div>
+    </a>
+  
+</nav>
+
+  
 </article>
 
-<% if (!index && post.comments && config.disqus_shortname){ %>
-<section id="comments">
-  <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
-</section>
-<% } %></section>
+
+
+ <section id="comments">
+   <!-- 多说评论框 start -->
+   <div class="ds-thread" data-thread-key="post-redux源码解读(一)-createStore" data-title="redux源码解读(一)-createStore" data-url="http://rainyleo.com/2016/10/28/redux源码解读(一)-createStore/"></div>
+   <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+   <script type="text/javascript">
+   var duoshuoQuery = {short_name:'rainyleo'};
+     (function() {
+       var ds = document.createElement('script');
+       ds.type = 'text/javascript';ds.async = true;
+       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+       ds.charset = 'UTF-8';
+       (document.getElementsByTagName('head')[0] 
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+     })();
+     </script>
+   <!-- 多说公共JS代码 end -->
+ </section>
+ </section>
         
           <aside id="sidebar">
   

@@ -68,50 +68,118 @@ Syntaxnew Promise( /*">
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Javascript-promise" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <%- partial('post/date', {class_name: 'article-date', date_format: null}) %>
-    <%- partial('post/category') %>
+    <a href="/2016/10/02/Javascript-promise/" class="article-date">
+  <time datetime="2016-10-02T12:22:42.000Z" itemprop="datePublished">2016-10-02</time>
+</a>
+    
   </div>
   <div class="article-inner">
-    <%- partial('post/gallery') %>
-    <% if (post.link || post.title){ %>
+    
+    
       <header class="article-header">
-        <%- partial('post/title', {class_name: 'article-title'}) %>
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JavaScript Promise
+    </h1>
+  
+
       </header>
-    <% } %>
+    
     <div class="article-entry" itemprop="articleBody">
-      <% if (post.excerpt && index){ %>
-        <%- post.excerpt %>
-        <% if (theme.excerpt_link){ %>
-          <p class="article-more-link">
-            <a href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %></a>
-          </p>
-        <% } %>
-      <% } else { %>
-        <%- post.content %>
-      <% } %>
+      
+        <p>A promise is a placeholder for the result of an asynchronous operation. Instead of subscribing to an event or passing a callback to a function, the function can return a promise</p>
+<h2 id="Syntax"><a href="#Syntax" class="headerlink" title="Syntax"></a>Syntax</h2><p><code>new Promise( /* executor */ function(resolve, reject) { ... } );</code> </p>
+<p><strong>Parameters: executor</strong></p>
+<p>A function that is passed the arguments resolve and reject. The executor function is executed immediately by the Promise implementation, passing <code>resolve</code> and <code>reject</code> functions (the executor is called before the Promise constructor even returns the created object). The resolve and reject functions, when called, resolve or reject the promise respectively. The executor normally initiates some asynchronous work and then, once that completes, calls either the resolve or reject function to resolve the promise or else reject it if an error occurred</p>
+<p>Calling <code>resolve()</code> triggers an asynchronous operation. Functions passed to <code>then()</code> and <code>catch()</code> are executed asynchronously, because these are also added to the <code>job queue</code></p>
+<p>Each call to <code>then()</code> or <code>catch()</code> actually creates and returns another promise. This second promise is resolved only when the first has been fulfilled or rejected<br><a id="more"></a><br><strong>Prototype Methods</strong></p>
+<p><code>Promise.prototype.catch(onRejected)</code><br>Appends a rejection handler callback to the promise, and returns a new promise resolving to the return value of the callback if it is called, or to its original fulfillment value if the promise is instead fulfilled.<br><code>Promise.prototype.then(onFulfilled, onRejected)</code><br>Appends fulfillment and rejection handlers to the promise, and returns a new promise resolving to the return value of the called handler, or to its original settled value if the promise was not handled (i.e. if the relevant handler onFulfilled or onRejected is not a function).    </p>
+<ul>
+<li>Example  </li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> promiseClean = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve, reject</span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> isClean = <span class="literal">true</span>;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (isClean) &#123;</div><div class="line">    resolve(<span class="string">'Clean'</span>);</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    reject(<span class="string">'not Clean'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">promiseClean.then(<span class="function"><span class="keyword">function</span> (<span class="params">fromResolve</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'this room is '</span> + fromResolve);</div><div class="line">&#125;).catch(<span class="function"><span class="keyword">function</span> (<span class="params">fromReject</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'this room is '</span> + fromReject);</div><div class="line">&#125;);</div><div class="line"><span class="comment">// 'this room is Clean'</span></div></pre></td></tr></table></figure>
+<h2 id="Terminology"><a href="#Terminology" class="headerlink" title="Terminology"></a>Terminology</h2><p>Any Promise object is in one of three mutually exclusive states: <code>fulfilled</code>, <code>rejected</code>, and <code>pending</code>:</p>
+<ul>
+<li>A promise p is <code>fulfilled</code> if <code>p.then(f, r)</code> will immediately enqueue a Job to call the function f.</li>
+<li>A promise p is <code>rejected</code> if <code>p.then(f, r)</code> will immediately enqueue a Job to call the function r.</li>
+<li>A promise is <code>pending</code> if it is neither fulfilled nor rejected.</li>
+<li>A promise is said to be <code>settled</code> if it is not pending, i.e. if it is either fulfilled or rejected.</li>
+</ul>
+<p>A promise is <code>resolved</code> if it is settled or if it has been “locked in” to match the state of another promise. Attempting to resolve or reject a resolved promise has no effect. An unresolved promise is always in the pending state. A resolved promise may be pending, fulfilled or rejected.</p>
+<h2 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h2><p><code>Promise.resolve()</code><br>The Promise.resolve() method accepts a single argument and returns a promise in the fulfilled state. That means no job scheduling occurs, and you need to add one or more fulfillment handlers to the promise to retrieve the value.  </p>
+<p><code>Promise.reject()</code><br>You can also create rejected promises by using the Promise.reject() method. This works like Promise.resolve() except the created promise is in the rejected state</p>
+<p>If you pass a promise to either the Promise.resolve() or Promise.reject() method, the promise is returned without modification.  </p>
+<p><code>Promise.all()</code><br>Promise.all takes an array of promises and creates a promise that fulfills when all of them successfully complete. You get an array of results (whatever the promises fulfilled to) in the same order as the promises you passed in.  </p>
+<p><code>Promise.race()</code><br>Returns a promise that fulfills or rejects as soon as one of the promises in the iterable fulfills or rejects, with the value or reason from that promise.</p>
+<h2 id="Other"><a href="#Other" class="headerlink" title="Other"></a>Other</h2><ul>
+<li>A promise can only succeed or fail <code>once</code>. </li>
+<li>If a promise has succeeded or failed and you later add a success/failure callback, the correct callback will be called, even though the event took place earlier.</li>
+</ul>
+<p>This is extremely useful for async success/failure, because you’re less interested in the exact time something became available, and more interested in reacting to the outcome.</p>
+<ul>
+<li>Queuing asynchronous actions</li>
+</ul>
+<p>You can also chain thens to run async actions in sequence.</p>
+<p>When you return something from a <code>then()</code> callback, it’s a bit magic. If you return a value, the next <code>then()</code> is called with that value. However, if you return something promise-like, the next <code>then()</code> waits on it, and is only called when that promise settles (succeeds/fails)</p>
+
+      
     </div>
     <footer class="article-footer">
-      <a data-url="<%- post.permalink %>" data-id="<%= post._id %>" class="article-share-link"><%= __('share') %></a>
-      <% if (post.comments && config.disqus_shortname){ %>
-        <a href="<%- post.permalink %>#disqus_thread" class="article-comment-link"><%= __('comment') %></a>
-      <% } %>
-      <%- partial('post/tag') %>
+      <a data-url="http://rainyleo.com/2016/10/02/Javascript-promise/" data-id="civ438jdk0007ag1n1qfi5dqe" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
     </footer>
   </div>
-  <% if (!index){ %>
-    <%- partial('post/nav') %>
-  <% } %>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/10/14/React-component-pattern/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          React中的组件分类
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/09/13/Array-methods/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JavaScript中数组迭代方法的简单实现</div>
+    </a>
+  
+</nav>
+
+  
 </article>
 
-<% if (!index && post.comments && config.disqus_shortname){ %>
-<section id="comments">
-  <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
-</section>
-<% } %></section>
+
+
+ <section id="comments">
+   <!-- 多说评论框 start -->
+   <div class="ds-thread" data-thread-key="post-Javascript-promise" data-title="JavaScript Promise" data-url="http://rainyleo.com/2016/10/02/Javascript-promise/"></div>
+   <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+   <script type="text/javascript">
+   var duoshuoQuery = {short_name:'rainyleo'};
+     (function() {
+       var ds = document.createElement('script');
+       ds.type = 'text/javascript';ds.async = true;
+       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+       ds.charset = 'UTF-8';
+       (document.getElementsByTagName('head')[0] 
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+     })();
+     </script>
+   <!-- 多说公共JS代码 end -->
+ </section>
+ </section>
         
           <aside id="sidebar">
   

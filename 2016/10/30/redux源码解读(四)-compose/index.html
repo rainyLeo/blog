@@ -77,50 +77,121 @@ function compose(f, g) {
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-redux源码解读(四)-compose" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <%- partial('post/date', {class_name: 'article-date', date_format: null}) %>
-    <%- partial('post/category') %>
+    <a href="/2016/10/30/redux源码解读(四)-compose/" class="article-date">
+  <time datetime="2016-10-30T12:52:01.000Z" itemprop="datePublished">2016-10-30</time>
+</a>
+    
   </div>
   <div class="article-inner">
-    <%- partial('post/gallery') %>
-    <% if (post.link || post.title){ %>
+    
+    
       <header class="article-header">
-        <%- partial('post/title', {class_name: 'article-title'}) %>
+        
+  
+    <h1 class="article-title" itemprop="name">
+      redux源码解读(四)-compose
+    </h1>
+  
+
       </header>
-    <% } %>
+    
     <div class="article-entry" itemprop="articleBody">
-      <% if (post.excerpt && index){ %>
-        <%- post.excerpt %>
-        <% if (theme.excerpt_link){ %>
-          <p class="article-more-link">
-            <a href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %></a>
-          </p>
-        <% } %>
-      <% } else { %>
-        <%- post.content %>
-      <% } %>
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>compose这个函数在函数式编程中很常见, 它把一个函数函数的结果传进另一个函数中, 例如<code>compose(f, g, h)(x)</code> 返回 <code>f(g(h(x)))</code></p>
+<p>下面先看一个简化版本的compose以便理解   </p>
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">compose</span>(<span class="params">f, g</span>) </span>{
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>{
+    <span class="keyword">return</span> f.call(<span class="keyword">this</span>, g.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>));
+  };
+  <span class="comment">/* 如果只接收一个参数, 也可以这样写
+  return function(x) {
+    return f(g(x));
+  };
+  */</span>
+}  
+
+<span class="keyword">const</span> square = <span class="function"><span class="params">x</span> =&gt;</span> x * x;
+<span class="keyword">const</span> sum = <span class="function">(<span class="params">x, y</span>) =&gt;</span> x + y;
+<span class="keyword">const</span> res = compose(square, sum);
+res(<span class="number">2</span>, <span class="number">3</span>); <span class="comment">// 25</span>
+</code></pre>
+<a id="more"></a>  
+<h2 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h2><p>下面是redux中的compose   </p>
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">compose</span>(<span class="params">...funcs</span>) </span>{
+  <span class="comment">// 没有传入函数时直接返回参数</span>
+  <span class="keyword">if</span> (funcs.length === <span class="number">0</span>) {
+    <span class="keyword">return</span> <span class="function"><span class="params">arg</span> =&gt;</span> arg;
+  }
+  <span class="comment">// 只有一个函数时直接返回该函数</span>
+  <span class="keyword">if</span> (funcs.length === <span class="number">1</span>) {
+    <span class="keyword">return</span> funcs[<span class="number">0</span>];
+  }
+
+  <span class="keyword">const</span> last = funcs[funcs.length - <span class="number">1</span>];
+  <span class="comment">// slice(0, -1)得到数组中除了最后一个的剩下的部分</span>
+  <span class="keyword">const</span> rest = funcs.slice(<span class="number">0</span>, <span class="number">-1</span>);
+  <span class="comment">// reduceRight从数组的最右边开始, 从右往左依次把上一个函数执行的结果传入下一个, 最后返回最左边函数的结果</span>
+  <span class="keyword">return</span> <span class="function">(<span class="params">...args</span>) =&gt;</span> rest.reduceRight(<span class="function">(<span class="params">composed, f</span>) =&gt;</span> f(composed), last(...args));
+}
+</code></pre>
+
+      
     </div>
     <footer class="article-footer">
-      <a data-url="<%- post.permalink %>" data-id="<%= post._id %>" class="article-share-link"><%= __('share') %></a>
-      <% if (post.comments && config.disqus_shortname){ %>
-        <a href="<%- post.permalink %>#disqus_thread" class="article-comment-link"><%= __('comment') %></a>
-      <% } %>
-      <%- partial('post/tag') %>
+      <a data-url="http://rainyleo.com/2016/10/30/redux源码解读(四)-compose/" data-id="civ438je2000kag1nk3w690mg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
     </footer>
   </div>
-  <% if (!index){ %>
-    <%- partial('post/nav') %>
-  <% } %>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/01/redux源码解读(五)-applyMiddleware/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          redux源码解读(五)-applyMiddleware
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/10/29/redux源码解读(三)-bindActionCreators/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">redux源码解读(三)-bindActionCreators</div>
+    </a>
+  
+</nav>
+
+  
 </article>
 
-<% if (!index && post.comments && config.disqus_shortname){ %>
-<section id="comments">
-  <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
-</section>
-<% } %></section>
+
+
+ <section id="comments">
+   <!-- 多说评论框 start -->
+   <div class="ds-thread" data-thread-key="post-redux源码解读(四)-compose" data-title="redux源码解读(四)-compose" data-url="http://rainyleo.com/2016/10/30/redux源码解读(四)-compose/"></div>
+   <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+   <script type="text/javascript">
+   var duoshuoQuery = {short_name:'rainyleo'};
+     (function() {
+       var ds = document.createElement('script');
+       ds.type = 'text/javascript';ds.async = true;
+       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+       ds.charset = 'UTF-8';
+       (document.getElementsByTagName('head')[0] 
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+     })();
+     </script>
+   <!-- 多说公共JS代码 end -->
+ </section>
+ </section>
         
           <aside id="sidebar">
   

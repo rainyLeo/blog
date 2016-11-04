@@ -68,50 +68,100 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-快捷键" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <%- partial('post/date', {class_name: 'article-date', date_format: null}) %>
-    <%- partial('post/category') %>
+    <a href="/2016/08/13/快捷键/" class="article-date">
+  <time datetime="2016-08-13T12:30:13.000Z" itemprop="datePublished">2016-08-13</time>
+</a>
+    
   </div>
   <div class="article-inner">
-    <%- partial('post/gallery') %>
-    <% if (post.link || post.title){ %>
+    
+    
       <header class="article-header">
-        <%- partial('post/title', {class_name: 'article-title'}) %>
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Atom快捷键(Mac)
+    </h1>
+  
+
       </header>
-    <% } %>
+    
     <div class="article-entry" itemprop="articleBody">
-      <% if (post.excerpt && index){ %>
-        <%- post.excerpt %>
-        <% if (theme.excerpt_link){ %>
-          <p class="article-more-link">
-            <a href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %></a>
-          </p>
-        <% } %>
-      <% } else { %>
-        <%- post.content %>
-      <% } %>
+      
+        <p>Atom快捷键整理 </p>
+<h2 id="光标移动"><a href="#光标移动" class="headerlink" title="光标移动"></a>光标移动</h2><p><code>ctrl-p</code> 上<br><code>ctrl-n</code> 下<br><code>ctrl-f</code> 左<br><code>ctrl-b</code> 右<br><code>ctrl-e</code> 移动至一行结尾<br><code>ctrl-a</code> 移动到一行开头<br><code>alt-b</code> <code>ctrl-j</code> 移动到单词开头<br><code>alt-f</code>  <code>ctrl-l</code> 移动到单词结尾<br><code>cmd-up</code> 移动到文件开头<br><code>cmd-down</code> 移动到文件结束<br><code>ctrl-g</code> 移动到指定行<br><code>cmd-r</code> 在函数之间跳转<br><a id="more"></a>  </p>
+<h2 id="编辑"><a href="#编辑" class="headerlink" title="编辑"></a>编辑</h2><p><code>cmd-enter</code> 在下方新建一行<br><code>shift-cmd-enter</code> 在上方新建一行<br><code>ctrl-shift-D</code> 复制当前行<br><code>ctrl-shift-K</code> 删除当前行<br><code>ctrl-cmd-down</code> 把当前行下移<br><code>ctrl-cmd-up</code> 把当前行上移<br><code>cmd-backspace</code> 删除至行首<br><code>cmd-delete</code> 删除至行尾<br><code>ctrl-k</code> 剪切至行尾<br><code>cmd-j</code> 合并本行与下一行<br><code>ctrl-d</code>  删除后一个字符<br><code>ctrl-h</code> 删除前一个字符<br><code>alt-h</code> 删除至单词开头<br><code>alt-d</code> 删除至单词结尾<br><code>ctrl-cmd-left</code> 左移选中的内容<br><code>ctrl-cmd-right</code> 右移选中的内容<br><code>ctrl-t</code> 使光标前后字符交换   </p>
+<h2 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h2><p><code>ctrl-shift-P</code> 向上选择<br><code>ctrl-shif-N</code> 向下选择<br><code>ctrl-shift-B</code> 向左选择<br><code>ctrl-shift-F</code> 向右选择<br><code>alt-shift-B</code> 选择至单词开头<br><code>alt-shift-F</code> 选择至单词结尾<br> <code>ctrl-sift-A</code> 选择至一行开头<br><code>ctrl-sift-E</code> 选择至一行结尾<br><code>ctrl-shift-W</code> 选中单词<br><code>cmd-l</code> 选中一行<br><code>cmd-shift-up</code>  选取至文件开始<br><code>cmd-shift-down</code>  选取至文件结尾<br><code>cmd-a</code>  全选  </p>
+<h2 id="查找和替换"><a href="#查找和替换" class="headerlink" title="查找和替换"></a>查找和替换</h2><p><code>cmd-f</code> 在当前文件中查找<br><code>cmd-shift-f</code> 在整个工程中查找<br><code>cmd-g</code> 找到下一个<br><code>cmd-e</code> 查找当前选中的内容  </p>
+<h2 id="代码缩进／折叠"><a href="#代码缩进／折叠" class="headerlink" title="代码缩进／折叠"></a>代码缩进／折叠</h2><p><code>cmd-[</code> <code>shift-TAB</code> 代码左缩进<br><code>cmd-]</code> <code>TAB</code> 代码右缩进<br><code>alt-cmd-[</code> 代码折叠<br><code>alt-cmd-]</code> 代码展开<br><code>cmd-k cmd-n</code> 折叠指定层级 n为层级数<br><code>alt-cmd-shift-[</code> 折叠全部<br><code>alt-cmd-shift-]</code> <code>cmd-k cmd-0</code> 展开全部   </p>
+<h2 id="多行光标"><a href="#多行光标" class="headerlink" title="多行光标"></a>多行光标</h2><p><code>cmd-click</code> 增加新光标<br><code>cmd-d</code> 选取文档中和当前单词相同的下一处<br><code>ctrl-cmd-g</code> 选取文档中所有和当前光标单词相同的位置<br><code>ctrl-shift-up/down</code> 在上方／下方增加光标</p>
+<h2 id="目录树"><a href="#目录树" class="headerlink" title="目录树"></a>目录树</h2><p><code>cmd-\</code>  显示(隐藏)目录树<br><code>ctrl-0</code> 焦点切换到目录树(再按一次返回)<br><code>k</code> 上移<br><code>j</code> 下移<br><code>h</code> 展开当前目录<br><code>l</code> 隐藏当前目录<br><code>ctrl-alt-]</code>  展开所有目录<br><code>ctrl-alt-[</code> 隐藏所有目录<br><code>a</code> 添加文件<br><code>m</code> 将当前文件更改路径<br><code>d</code> 将当前文件复制另存为<br><code>i</code> 显示(隐藏)版本控制忽略的文件<br><code>ctrl-shift-C</code> 复制当前文件路径</p>
+<h2 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h2><p><code>cmd-n</code> 新建文件<br><code>cmd-S</code> 保存<br><code>shift-cmd-S</code> 另存为<br><code>cmd-t</code> 查找文件<br><code>cmd-b</code> 在打开的文件之间切换<br><code>cmd-1``cmd-2</code> 切换至文件1，文件2…<br><code>ctrl-shift-s</code> 保存所有打开的文件<br><code>cmd-shift-o</code>  打开目录   </p>
+<h2 id="书签"><a href="#书签" class="headerlink" title="书签"></a>书签</h2><p><code>cmd-F2</code> 在本行增加书签<br><code>F2</code> 跳到当前文件的下一条书签<br><code>shift-F2</code> 跳到当前文件的上一条书签<br><code>ctrl-F2</code> 列出当前工程所有书签  </p>
+<h2 id="括号跳转"><a href="#括号跳转" class="headerlink" title="括号跳转"></a>括号跳转</h2><p><code>ctrl-m</code> 在括号和html-tag等之间跳转<br><code>ctrl-cmd-m</code> 括号(tag)之间文本选取  </p>
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><p><code>cmd-,</code> 打开Atom设置<br><code>cmd-y</code> 重复操作<br><code>cmd-z</code> 取消操作<br><code>cmd-+</code> 放大<br><code>com--</code> 缩小<br><code>cmd-0</code> 缩放至默认<br><code>cmd-/</code> 注释<br><code>ctrl-shift-L</code> 选择语法高亮<br><code>alt-shift-S</code> 查看当前可用代码片段<br><code>ctrl-shift-U</code> 切换编码<br><code>cmd-k</code> <code>up/down/left/rignt</code>  窗口分割<br><code>cmd-w</code> 关闭窗口<br><code>ctrl-cmd-f</code> 全屏<br><code>ctrl-shift-M</code> 打开Markdown预览<br><code>ctrl-shift-M</code> 选中括号内内容</p>
+<h2 id="自定义"><a href="#自定义" class="headerlink" title="自定义"></a>自定义</h2><p>可以再atom 的<code>keymap</code>自定义快捷键, 格式如下, 下面是我自定义的几个<br>PS: 我把<code>capslock</code>和<code>ctrl</code>按键进行了对调</p>
+<pre><code class="js"><span class="string">'atom-text-editor'</span>: {
+    <span class="string">'shift-ctrl-D'</span>: <span class="string">'editor:duplicate-lines'</span>,
+    <span class="string">'shift-ctrl-enter'</span>: <span class="string">'editor:newline-above'</span>,
+    <span class="string">'ctrl-enter'</span>: <span class="string">'editor:newline-below'</span>
+    <span class="string">'ctrl-j'</span>: <span class="string">'editor:move-to-beginning-of-word'</span>,
+    <span class="string">'ctrl-l'</span>: <span class="string">'editor:move-to-end-of-word'</span>
+}
+</code></pre>
+
+      
     </div>
     <footer class="article-footer">
-      <a data-url="<%- post.permalink %>" data-id="<%= post._id %>" class="article-share-link"><%= __('share') %></a>
-      <% if (post.comments && config.disqus_shortname){ %>
-        <a href="<%- post.permalink %>#disqus_thread" class="article-comment-link"><%= __('comment') %></a>
-      <% } %>
-      <%- partial('post/tag') %>
+      <a data-url="http://rainyleo.com/2016/08/13/快捷键/" data-id="civ438je8000nag1nt2zxn2uq" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/atom/">atom</a></li></ul>
+
     </footer>
   </div>
-  <% if (!index){ %>
-    <%- partial('post/nav') %>
-  <% } %>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/09/02/JavaScript-Object-Methods/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          一张图看明白JavaScript中对象的方法
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
 </article>
 
-<% if (!index && post.comments && config.disqus_shortname){ %>
-<section id="comments">
-  <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
-</section>
-<% } %></section>
+
+
+ <section id="comments">
+   <!-- 多说评论框 start -->
+   <div class="ds-thread" data-thread-key="post-快捷键" data-title="Atom快捷键(Mac)" data-url="http://rainyleo.com/2016/08/13/快捷键/"></div>
+   <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+   <script type="text/javascript">
+   var duoshuoQuery = {short_name:'rainyleo'};
+     (function() {
+       var ds = document.createElement('script');
+       ds.type = 'text/javascript';ds.async = true;
+       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+       ds.charset = 'UTF-8';
+       (document.getElementsByTagName('head')[0] 
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+     })();
+     </script>
+   <!-- 多说公共JS代码 end -->
+ </section>
+ </section>
         
           <aside id="sidebar">
   
