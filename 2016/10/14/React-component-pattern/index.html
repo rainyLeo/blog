@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>React中的组件分类 | rainyleo blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="原文链接
+React 中一切都是组件化的, 把组件分为2种类型有利于开发和重用. 可以把这两种类型称为容器组件(Container component) 和 呈现组件(Presentational component).  
+它们有什么区别呢?  
+呈现组件的特点:  
+
+关注UI的展现
+可以在内部包含呈现和容器组件, 通常有一些DOM标签和自己的样式
+仅从props接收数据和回调  
+通常没有自">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React中的组件分类">
+<meta property="og:url" content="http://rainyleo.com/2016/10/14/React-component-pattern/index.html">
+<meta property="og:site_name" content="rainyleo blog">
+<meta property="og:description" content="原文链接
+React 中一切都是组件化的, 把组件分为2种类型有利于开发和重用. 可以把这两种类型称为容器组件(Container component) 和 呈现组件(Presentational component).  
+它们有什么区别呢?  
+呈现组件的特点:  
+
+关注UI的展现
+可以在内部包含呈现和容器组件, 通常有一些DOM标签和自己的样式
+仅从props接收数据和回调  
+通常没有自">
+<meta property="og:updated_time" content="2016-11-04T04:27:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React中的组件分类">
+<meta name="twitter:description" content="原文链接
+React 中一切都是组件化的, 把组件分为2种类型有利于开发和重用. 可以把这两种类型称为容器组件(Container component) 和 呈现组件(Presentational component).  
+它们有什么区别呢?  
+呈现组件的特点:  
+
+关注UI的展现
+可以在内部包含呈现和容器组件, 通常有一些DOM标签和自己的样式
+仅从props接收数据和回调  
+通常没有自">
+  
+    <link rel="alternate" href="/atom.xml" title="rainyleo blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rainyleo blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rainyleo.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-React-component-pattern" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/10/14/React-component-pattern/" class="article-date">
+  <time datetime="2016-10-14T02:51:08.000Z" itemprop="datePublished">2016-10-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      React中的组件分类
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0#.z97goyfuy" target="_blank" rel="external">原文链接</a></p>
+<p>React 中一切都是组件化的, 把组件分为2种类型有利于开发和重用. 可以把这两种类型称为<em>容器组件(Container component)</em> 和 <em>呈现组件(Presentational component)</em>.  </p>
+<p>它们有什么区别呢?  </p>
+<p><strong>呈现组件</strong>的特点:  </p>
+<ul>
+<li>关注UI的展现</li>
+<li>可以在内部包含呈现和容器组件, 通常有一些DOM标签和自己的样式</li>
+<li>仅从<code>props</code>接收数据和回调  </li>
+<li>通常没有自己的<code>state</code></li>
+<li>通常可以写成函数组件, 除非需要 state 或生命周期函数</li>
+<li>和应用中其他部分没有关联, 比如 Redux</li>
+<li>不关心数据是怎样传递和修改的</li>
+<li>可以有<code>this.props.children</code></li>
+<li>通常是手写的</li>
+<li>例如: <em>Page, Sidebar, Story, UserInfo, List</em></li>
+</ul>
+<a id="more"></a>
+<p><strong>容器组件</strong>的特点:  </p>
+<ul>
+<li>关注业务逻辑  </li>
+<li>可以在内部包含呈现和容器组件, 但通常自身没有DOM标签(除了外层的包含div), 也没有样式</li>
+<li>给呈现组件和其他容器组件提供数据和方法  </li>
+<li>通常有自己的<code>state</code>  </li>
+<li>可以和 Redux 联系, 通常由 Redux 的<code>connect()</code>函数生成, 从而可以接收来自 Redux 的<code>State</code>的数据以及 <code>dispatch</code> Redux actions  </li>
+<li>可以调用 Redux 的 actions ,然后作为回调传递给呈现组件</li>
+<li>例如: <em>UserPage, FollowersSidebar, StoryContainer, FollowedUserList</em>  </li>
+</ul>
+<p>在开发时可以把它们放在不同的目录中加以区别.  </p>
+<h2 id="组件分类的好处"><a href="#组件分类的好处" class="headerlink" title="组件分类的好处"></a>组件分类的好处</h2><ul>
+<li>把关注的内容分离. 这样可以更好地理解你的应用和 UI </li>
+<li>组件重用. 可以用同样的呈现组件和不同的数据源搭配, 变成各自独立的容器组件, 之后便可以重用  </li>
+<li>呈现组件是应用中的’调色板’. 你可以把它们放在一个单独页面中让设计师来修改, 而不会接触到应用的逻辑. 这样方便在那个页面中回溯不同的版本.</li>
+<li>这样可以强迫你把’布局组件’例如<em>Sidebar, Page, ContextMenu</em>等提取出来, 并使用<code>this.props.children</code>, 而不是在几个容器组件中复制同样的内容和布局</li>
+</ul>
+<p>记住一点, 组件不一定要产生DOM. 它们是 UI 之间的一种组合方式.  </p>
+<h2 id="什么时候需要容器组件呢"><a href="#什么时候需要容器组件呢" class="headerlink" title="什么时候需要容器组件呢?"></a>什么时候需要容器组件呢?</h2><p>建议从呈现组件开始写你的应用. 最终你会发现你把很多的 props 传递给了中间组件. 当你注意到一些组件并没有使用它们接收到的 props 而仅仅是把它们传递给下一层组件, 而且任何时候当它们的子组件需要更多数据时你都要修改这些中间组件, 这时候你就应该使用一些容器组件了. 这样子你就可以把数据和方法传递给叶子组件而不需要关心树中间那些不相关的组件.  </p>
+<p>呈现组件和容器组件有各自产生的方式. 呈现组件趋向于使用无状态的纯函数, 容器组件趋向于有状态的纯 class. 但这只是一种观点而不是准则, 在特定情况下也可能会出现相反的情况 .<br>不要把呈现组件和容器组件的分离当成教条. 有时候这并不重要, 或者你很难去区分. 如果你不确定一个组件应该是哪一种时, 可能还没到该决定的时候.  </p>
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><p>这里是最初未分离的代码 </p>
+<pre><code class="js"><span class="comment">// CommentList.js</span>
+
+<span class="class"><span class="keyword">class</span> <span class="title">CommentList</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>{
+  <span class="keyword">constructor</span>(props) {
+    <span class="keyword">super</span>(props);
+    <span class="keyword">this</span>.state = { <span class="attr">comments</span>: [] }
+  }
+
+  componentDidMount() {
+    $.ajax({
+      <span class="attr">url</span>: <span class="string">"/my-comments.json"</span>,
+      <span class="attr">dataType</span>: <span class="string">'json'</span>,
+      <span class="attr">success</span>: <span class="function"><span class="keyword">function</span>(<span class="params">comments</span>) </span>{
+        <span class="keyword">this</span>.setState({<span class="attr">comments</span>: comments});
+      }.bind(<span class="keyword">this</span>)
+    });
+  }
+
+  renderComment({body, author}) {
+    <span class="keyword">return</span> &lt;li&gt;{body}—{author}&lt;/li&gt;;
+  }
+
+  render() {
+    <span class="keyword">return</span> &lt;ul&gt; {this.state.comments.map(renderComment)} &lt;/ul&gt;;
+  }
+
+}
+</code></pre>
+<p>下面分离成2个组件, 第一个是呈现组件, 第二个是容器组件  </p>
+<pre><code class="js"><span class="comment">// CommentList.js</span>
+
+<span class="class"><span class="keyword">class</span> <span class="title">CommentList</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>{
+  <span class="keyword">constructor</span>(props) {
+    <span class="keyword">super</span>(props);
+  }
+
+  renderComment({body, author}) {
+    <span class="keyword">return</span> &lt;li&gt;{body}—{author}&lt;/li&gt;;
+  }
+
+  render() { 
+    <span class="keyword">return</span> &lt;ul&gt; {this.props.comments.map(renderComment)} &lt;/ul&gt;;
+  }
+
+}
+</code></pre>
+<pre><code class="js"><span class="comment">// CommentListContainer.js</span>
+
+<span class="class"><span class="keyword">class</span> <span class="title">CommentListContainer</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>{
+  <span class="keyword">constructor</span>() {
+    <span class="keyword">super</span>();
+    <span class="keyword">this</span>.state = { <span class="attr">comments</span>: [] }
+  }
+
+  componentDidMount() {
+    $.ajax({
+      <span class="attr">url</span>: <span class="string">"/my-comments.json"</span>,
+      <span class="attr">dataType</span>: <span class="string">'json'</span>,
+      <span class="attr">success</span>: <span class="function"><span class="keyword">function</span>(<span class="params">comments</span>) </span>{
+        <span class="keyword">this</span>.setState({<span class="attr">comments</span>: comments});
+      }.bind(<span class="keyword">this</span>)
+    });
+  }
+
+  render() {
+    <span class="keyword">return</span> &lt;CommentList comments={this.state.comments} /&gt;;
+  }
+}
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rainyleo.com/2016/10/14/React-component-pattern/" data-id="civ39vyz00002dl1nkh8srfhl" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/10/28/redux源码解读(一)-createStore/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          redux源码解读(一)-createStore
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/10/02/Javascript-promise/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JavaScript Promise</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/atom/">atom</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/atom/" style="font-size: 10px;">atom</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/11/01/redux源码解读(五)-applyMiddleware/">redux源码解读(五)-applyMiddleware</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/30/redux源码解读(四)-compose/">redux源码解读(四)-compose</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/29/redux源码解读(三)-bindActionCreators/">redux源码解读(三)-bindActionCreators</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/29/redux源码解读(二)-combineReducers/">redux源码解读(二)-combineReducers</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/28/redux源码解读(一)-createStore/">redux源码解读(一)-createStore</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 rainyLeo<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
