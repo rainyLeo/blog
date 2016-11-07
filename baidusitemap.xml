@@ -3,6 +3,135 @@
 
 
     
+  <url>
+    <loc>http://rainyleo.com/2016/09/06/JavaScript_Event_Loop/</loc>
+    <lastmod>2016-11-07T12:39:49.000Z</lastmod>
+    <data>
+        <display>
+        <title>JavaScript 异步(1)-Event loop</title>
+        <pubTime>2016-09-06T01:57:45.000Z</pubTime>
+        
+        <tag>JavaScript</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://rainyleo.com/2016/10/30/Redux%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB(4)-compose/</loc>
+    <lastmod>2016-11-07T10:17:22.000Z</lastmod>
+    <data>
+        <display>
+        <title>Redux源码解读(4)-compose</title>
+        <pubTime>2016-10-30T12:52:01.000Z</pubTime>
+        
+        <tag>JavaScript</tag>
+         
+        <tag>React</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://rainyleo.com/2016/11/01/Redux%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB(5)-applyMiddleware/</loc>
+    <lastmod>2016-11-07T10:17:14.000Z</lastmod>
+    <data>
+        <display>
+        <title>Redux源码解读(5)-applyMiddleware</title>
+        <pubTime>2016-11-01T09:48:51.000Z</pubTime>
+        
+        <tag>JavaScript</tag>
+         
+        <tag>React</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://rainyleo.com/2016/10/29/Redux%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB(2)-combineReducers/</loc>
+    <lastmod>2016-11-07T10:16:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>Redux源码解读(2)-combineReducers</title>
+        <pubTime>2016-10-29T00:27:31.000Z</pubTime>
+        
+        <tag>JavaScript</tag>
+         
+        <tag>React</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://rainyleo.com/2016/10/28/Redux%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB(1)-createStore/</loc>
+    <lastmod>2016-11-07T10:16:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>Redux源码解读(1)-createStore</title>
+        <pubTime>2016-10-28T11:51:59.000Z</pubTime>
+        
+        <tag>JavaScript</tag>
+         
+        <tag>React</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://rainyleo.com/2016/10/29/Redux%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB(3)-bindActionCreators/</loc>
+    <lastmod>2016-11-07T10:16:12.000Z</lastmod>
+    <data>
+        <display>
+        <title>Redux源码解读(3)-bindActionCreators</title>
+        <pubTime>2016-10-29T09:52:01.000Z</pubTime>
+        
+        <tag>JavaScript</tag>
+         
+        <tag>React</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://rainyleo.com/2016/09/20/Javascript-promise/</loc>
+    <lastmod>2016-11-07T10:11:37.000Z</lastmod>
+    <data>
+        <display>
+        <title>JavaScript 异步(2)-Promise</title>
+        <pubTime>2016-09-20T12:22:42.000Z</pubTime>
+        
+        <tag>JavaScript</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
     
     
     
@@ -15,108 +144,6 @@
         <pubTime>2016-08-13T12:30:13.000Z</pubTime>
         
         <tag>atom</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://rainyleo.com/2016/10/28/redux%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB(%E4%B8%80)-createStore/</loc>
-    <lastmod>2016-11-04T04:31:44.000Z</lastmod>
-    <data>
-        <display>
-        <title>redux源码解读(一)-createStore</title>
-        <pubTime>2016-10-28T11:51:59.000Z</pubTime>
-        
-        <tag>JavaScript</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://rainyleo.com/2016/10/29/redux%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB(%E4%BA%8C)-combineReducers/</loc>
-    <lastmod>2016-11-04T04:31:26.000Z</lastmod>
-    <data>
-        <display>
-        <title>redux源码解读(二)-combineReducers</title>
-        <pubTime>2016-10-29T00:27:31.000Z</pubTime>
-        
-        <tag>JavaScript</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://rainyleo.com/2016/10/29/redux%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB(%E4%B8%89)-bindActionCreators/</loc>
-    <lastmod>2016-11-04T04:31:04.000Z</lastmod>
-    <data>
-        <display>
-        <title>redux源码解读(三)-bindActionCreators</title>
-        <pubTime>2016-10-29T09:52:01.000Z</pubTime>
-        
-        <tag>JavaScript</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://rainyleo.com/2016/10/30/redux%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB(%E5%9B%9B)-compose/</loc>
-    <lastmod>2016-11-04T04:30:47.000Z</lastmod>
-    <data>
-        <display>
-        <title>redux源码解读(四)-compose</title>
-        <pubTime>2016-10-30T12:52:01.000Z</pubTime>
-        
-        <tag>JavaScript</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://rainyleo.com/2016/11/01/redux%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB(%E4%BA%94)-applyMiddleware/</loc>
-    <lastmod>2016-11-04T04:30:20.000Z</lastmod>
-    <data>
-        <display>
-        <title>redux源码解读(五)-applyMiddleware</title>
-        <pubTime>2016-11-01T09:48:51.000Z</pubTime>
-        
-        <tag>JavaScript</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://rainyleo.com/2016/10/02/Javascript-promise/</loc>
-    <lastmod>2016-11-04T04:29:18.000Z</lastmod>
-    <data>
-        <display>
-        <title>JavaScript Promise</title>
-        <pubTime>2016-10-02T12:22:42.000Z</pubTime>
-        
-        <tag>JavaScript</tag>
          
          
            
@@ -143,7 +170,7 @@
 
     
   <url>
-    <loc>http://rainyleo.com/2016/09/02/JavaScript-Object-Methods/</loc>
+    <loc>http://rainyleo.com/2016/09/02/JavaScript_Object_Methods/</loc>
     <lastmod>2016-11-04T04:28:35.000Z</lastmod>
     <data>
         <display>

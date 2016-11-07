@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>redux源码解读(五)-applyMiddleware | rainyleo blog</title>
+  <title>Redux源码解读(5)-applyMiddleware | rainyleo blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="概述applyMiddleware()感觉应该是redux的5个API中最绕人一个了, 它往往作为createStore()的第三个参数enhancer, 那它enhance了什么呢? 答案就是createStore()里面的dispatch函数
 
 函数参数, 参数为包含几个不同middleware的数组或只有一个middleware函数,每个middleware函数会返回一个接收3次参数的柯里">
 <meta property="og:type" content="article">
-<meta property="og:title" content="redux源码解读(五)-applyMiddleware">
-<meta property="og:url" content="http://rainyleo.com/2016/11/01/redux源码解读(五)-applyMiddleware/index.html">
+<meta property="og:title" content="Redux源码解读(5)-applyMiddleware">
+<meta property="og:url" content="http://rainyleo.com/2016/11/01/Redux源码解读(5)-applyMiddleware/index.html">
 <meta property="og:site_name" content="rainyleo blog">
 <meta property="og:description" content="概述applyMiddleware()感觉应该是redux的5个API中最绕人一个了, 它往往作为createStore()的第三个参数enhancer, 那它enhance了什么呢? 答案就是createStore()里面的dispatch函数
 
 函数参数, 参数为包含几个不同middleware的数组或只有一个middleware函数,每个middleware函数会返回一个接收3次参数的柯里">
-<meta property="og:updated_time" content="2016-11-04T04:30:20.000Z">
+<meta property="og:updated_time" content="2016-11-07T10:17:14.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="redux源码解读(五)-applyMiddleware">
+<meta name="twitter:title" content="Redux源码解读(5)-applyMiddleware">
 <meta name="twitter:description" content="概述applyMiddleware()感觉应该是redux的5个API中最绕人一个了, 它往往作为createStore()的第三个参数enhancer, 那它enhance了什么呢? 答案就是createStore()里面的dispatch函数
 
 函数参数, 参数为包含几个不同middleware的数组或只有一个middleware函数,每个middleware函数会返回一个接收3次参数的柯里">
@@ -71,9 +71,9 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-redux源码解读(五)-applyMiddleware" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Redux源码解读(5)-applyMiddleware" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/11/01/redux源码解读(五)-applyMiddleware/" class="article-date">
+    <a href="/2016/11/01/Redux源码解读(5)-applyMiddleware/" class="article-date">
   <time datetime="2016-11-01T09:48:51.000Z" itemprop="datePublished">2016-11-01</time>
 </a>
     
@@ -85,7 +85,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      redux源码解读(五)-applyMiddleware
+      Redux源码解读(5)-applyMiddleware
     </h1>
   
 
@@ -183,10 +183,10 @@ thunk.withExtraArgument = createThunkMiddleware;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rainyleo.com/2016/11/01/redux源码解读(五)-applyMiddleware/" data-id="civ438je0000iag1nx5c1qbzq" class="article-share-link">Share</a>
+      <a data-url="http://rainyleo.com/2016/11/01/Redux源码解读(5)-applyMiddleware/" data-id="civ7wz2yc000m931ny0rcoya5" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li></ul>
 
     </footer>
   </div>
@@ -195,9 +195,9 @@ thunk.withExtraArgument = createThunkMiddleware;
 <nav id="article-nav">
   
   
-    <a href="/2016/10/30/redux源码解读(四)-compose/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/10/30/Redux源码解读(4)-compose/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">redux源码解读(四)-compose</div>
+      <div class="article-nav-title">Redux源码解读(4)-compose</div>
     </a>
   
 </nav>
@@ -209,7 +209,7 @@ thunk.withExtraArgument = createThunkMiddleware;
 
  <section id="comments">
    <!-- 多说评论框 start -->
-   <div class="ds-thread" data-thread-key="post-redux源码解读(五)-applyMiddleware" data-title="redux源码解读(五)-applyMiddleware" data-url="http://rainyleo.com/2016/11/01/redux源码解读(五)-applyMiddleware/"></div>
+   <div class="ds-thread" data-thread-key="post-Redux源码解读(5)-applyMiddleware" data-title="Redux源码解读(5)-applyMiddleware" data-url="http://rainyleo.com/2016/11/01/Redux源码解读(5)-applyMiddleware/"></div>
    <!-- 多说评论框 end -->
    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
    <script type="text/javascript">
@@ -246,7 +246,7 @@ thunk.withExtraArgument = createThunkMiddleware;
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/atom/" style="font-size: 10px;">atom</a>
+      <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/React/" style="font-size: 15px;">React</a> <a href="/tags/atom/" style="font-size: 10px;">atom</a>
     </div>
   </div>
 
@@ -268,23 +268,23 @@ thunk.withExtraArgument = createThunkMiddleware;
       <ul>
         
           <li>
-            <a href="/2016/11/01/redux源码解读(五)-applyMiddleware/">redux源码解读(五)-applyMiddleware</a>
+            <a href="/2016/11/01/Redux源码解读(5)-applyMiddleware/">Redux源码解读(5)-applyMiddleware</a>
           </li>
         
           <li>
-            <a href="/2016/10/30/redux源码解读(四)-compose/">redux源码解读(四)-compose</a>
+            <a href="/2016/10/30/Redux源码解读(4)-compose/">Redux源码解读(4)-compose</a>
           </li>
         
           <li>
-            <a href="/2016/10/29/redux源码解读(三)-bindActionCreators/">redux源码解读(三)-bindActionCreators</a>
+            <a href="/2016/10/29/Redux源码解读(3)-bindActionCreators/">Redux源码解读(3)-bindActionCreators</a>
           </li>
         
           <li>
-            <a href="/2016/10/29/redux源码解读(二)-combineReducers/">redux源码解读(二)-combineReducers</a>
+            <a href="/2016/10/29/Redux源码解读(2)-combineReducers/">Redux源码解读(2)-combineReducers</a>
           </li>
         
           <li>
-            <a href="/2016/10/28/redux源码解读(一)-createStore/">redux源码解读(一)-createStore</a>
+            <a href="/2016/10/28/Redux源码解读(1)-createStore/">Redux源码解读(1)-createStore</a>
           </li>
         
       </ul>
