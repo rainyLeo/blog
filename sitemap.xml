@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://rainyleo.com/2016/09/20/Javascript-promise/</loc>
+    
+    <lastmod>2016-11-07T13:13:57.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://rainyleo.com/2016/08/15/Array-methods/</loc>
     
     <lastmod>2016-11-07T12:49:57.000Z</lastmod>
@@ -54,13 +61,6 @@
     <loc>http://rainyleo.com/2016/10/29/Redux%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB(3)-bindActionCreators/</loc>
     
     <lastmod>2016-11-07T10:16:12.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://rainyleo.com/2016/09/20/Javascript-promise/</loc>
-    
-    <lastmod>2016-11-07T10:11:37.000Z</lastmod>
     
   </url>
   

@@ -17,7 +17,7 @@ Promise 接收一个函数作为参数">
 语法新建一个 Promise 对象可以用下面的语法,new Promise( /* executor */ function(resolve, reject) { ... } ); 
 参数: executor
 Promise 接收一个函数作为参数">
-<meta property="og:updated_time" content="2016-11-07T10:11:37.000Z">
+<meta property="og:updated_time" content="2016-11-07T13:13:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JavaScript 异步(2)-Promise">
 <meta name="twitter:description" content="promise 是一个保存异步操作结果的容器(placeholder). 异步操作除了给函数传递回调, 或订阅事件, 也可以让它返回一个 promise
@@ -124,30 +124,28 @@ Promise 接收一个函数作为参数">
 <p><code>Promise.race()</code><br>只要有一个 promise 状态为 fulfills 或 rejects时, 会返回一个新 promise 状态为 fulfill 或 reject, 并把它返回值传递给新 promise</p>
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
 <li>一个 promise 只会成功或失败一次. </li>
-<li><p>如果一个 promise 已经成功或失败, 你之后又添加了一个成功/失败的回调, 回调会被执行, 这对于异步的 success/failure操作很有用, 因为你更关心结果而不是它发生的确切时间.</p>
-</li>
-<li><p>异步操作排队: 可以链式调用 thens 进行一连串异步操作.</p>
-</li>
+<li>如果一个 promise 已经成功或失败, 你之后又添加了一个成功/失败的回调, 回调会被执行, 这方便异步的 success/failure操作, 因为我们更关心结果而不关心它发生的时间.</li>
+<li>可以链式调用 thens 进行一连串异步操作.</li>
+<li>从<code>then()</code>的回调返回普通值的时候, 下一个<code>then()</code>会用这个值进行调用. 当返回一个 promise 时, 下一个 <code>then()</code> 会等待这个 promise settled 时才会调用</li>
 </ul>
-<p>当你从<code>then()</code>的回调返回普通值的时候, 下一个<code>then()</code>会用这个值进行调用. 但是当你返回一个 promise 时, 下一个 <code>then()</code> 会等待, 直到这个 promise settled 时才会调用</p>
-<h2 id="Job-queue-Microtask"><a href="#Job-queue-Microtask" class="headerlink" title="Job queue (Microtask)"></a>Job queue (Microtask)</h2><p>promise.then() 的回调会作为 job 加入 job queue, job 又叫 microtask, Event loop 会在当前的循环(tick)最后把 job queue 中的所有 job 依次加入 callback 中执行, 然后再开始下一次 tick. </p>
-<p>setTimeout 的回调会作为 task 加入 task queue, 这个 task 又叫 macrotask. 当 callstak 为空时,  Event loop 在每一次 tick 中把 task queue 最前面的 task 加入 callback 中执行, 即一次 tick 只执行一个 task,  因此 setTimeout 的回调至少要在下一次 tick 时才会执行. </p>
+<h2 id="Microtask-queue-Job-queue"><a href="#Microtask-queue-Job-queue" class="headerlink" title="Microtask queue(Job queue)"></a>Microtask queue(Job queue)</h2><p>promise.then() 的回调会作为 microtask 加入 microtask queue, microtask 又叫 job, Event loop 会在当前的循环(tick)最后把 job queue 中的所有 job 依次加入 call stack 中执行, 然后再开始下一次 tick. </p>
+<p>setTimeout 的回调会作为 macrotask 加入 task queue. 当 call stak 为空时,  Event loop 在每一次 tick 中把 task queue 最前面的 task 加入 call stack 中执行, 即一次 tick 只执行一个 task, 因此 setTimeout 的回调至少要在下一次 tick 时才会执行. </p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="number">4</span>)</div><div class="line">&#125;, <span class="number">0</span>);</div><div class="line"></div><div class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> <span class="title">executor</span>(<span class="params">resolve</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>);</div><div class="line">  <span class="keyword">for</span>( <span class="keyword">var</span> i=<span class="number">0</span> ; i&lt;<span class="number">10000</span> ; i++ ) &#123;</div><div class="line">    i == <span class="number">9999</span> &amp;&amp; resolve();</div><div class="line">  &#125;</div><div class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>);</div><div class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="number">5</span>);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="number">3</span>);</div><div class="line"><span class="comment">// 1 2 3 5 4</span></div></pre></td></tr></table></figure>
 <p>分析:</p>
 <ol>
-<li>Event loop 的当前 tick 开始运行,  首先 setTimeout 的回调添加到 task queue(macrotask)</li>
+<li>Event loop 的当前 tick 开始运行,  首先 setTimeout 设置一个定时器, 时间到了时浏览器把回调添加到 task queue</li>
 <li>promise 的 executor 是立即执行的, 先输出 1, 然后 resolve, 输出 2</li>
-<li>promise.then 中的回调加入当前 tick 的 job queue(microtask), </li>
+<li>promise.then 中的回调加入当前 tick 的 job queue </li>
 <li>输出 3</li>
-<li>当前 task 执行完, job queue 中的 job 进入 callstack 执行,  输出 5</li>
+<li>macrotask 执行完, job queue 中的 job 进入 call stack 执行,  输出 5</li>
 <li>下一个 tick 开始, task queue 中的第一个 task 开始执行, 输出4</li>
 </ol>
-<p>参考链接:<br> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank" rel="external">MDN</a><br><a href="https://developers.google.com/web/fundamentals/getting-started/primers/promises" target="_blank" rel="external">Google developer</a><br><a href="https://promisesaplus.com/" target="_blank" rel="external">PromiseA+</a></p>
+<p>参考链接:<br><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank" rel="external">MDN</a><br><a href="https://developers.google.com/web/fundamentals/getting-started/primers/promises" target="_blank" rel="external">Google developer</a><br><a href="https://promisesaplus.com/" target="_blank" rel="external">PromiseA+</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rainyleo.com/2016/09/20/Javascript-promise/" data-id="civ82b7h30009vg1nrdrx5hca" class="article-share-link">Share</a>
+      <a data-url="http://rainyleo.com/2016/09/20/Javascript-promise/" data-id="civ83aak30006771ngq4c3c7a" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>

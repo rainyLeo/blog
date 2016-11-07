@@ -4,6 +4,23 @@
 
     
   <url>
+    <loc>http://rainyleo.com/2016/09/20/Javascript-promise/</loc>
+    <lastmod>2016-11-07T13:13:57.000Z</lastmod>
+    <data>
+        <display>
+        <title>JavaScript 异步(2)-Promise</title>
+        <pubTime>2016-09-20T12:22:42.000Z</pubTime>
+        
+        <tag>JavaScript</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://rainyleo.com/2016/08/15/Array-methods/</loc>
     <lastmod>2016-11-07T12:49:57.000Z</lastmod>
     <data>
@@ -141,23 +158,6 @@
         <tag>JavaScript</tag>
          
         <tag>React</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://rainyleo.com/2016/09/20/Javascript-promise/</loc>
-    <lastmod>2016-11-07T10:11:37.000Z</lastmod>
-    <data>
-        <display>
-        <title>JavaScript 异步(2)-Promise</title>
-        <pubTime>2016-09-20T12:22:42.000Z</pubTime>
-        
-        <tag>JavaScript</tag>
          
          
            
