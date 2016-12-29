@@ -3,18 +3,24 @@
 <head>
   <meta charset="utf-8">
   
-  <title>rainyleo blog</title>
+  <title>CSS 百分比 | rainyleo blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="google-site-verification: googlee985db6ebd1d6e74.html">
-<meta property="og:type" content="website">
-<meta property="og:title" content="rainyleo blog">
-<meta property="og:url" content="http://www.rainyleo.com/googlee985db6ebd1d6e74.html">
+  <meta name="description" content="CSS 中很多属性都可以有百分比值, 不同的属性对应的百分比意义也不一样.百分比是一种相对值, 在分析 CSS 属性的百分比含义时, 需要找到对应的参照物.
+属性下面分析可以用百分比表示的 CSS 属性以及对应的参照物.
+width: 相对于包含块(containing block)的 width. 对于绝对定位的元素, 它的包含块基于 block-level 元素, 百分比相对于那个元素的 pa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS 百分比">
+<meta property="og:url" content="http://www.rainyleo.com/2016/10/12/CSS百分比/index.html">
 <meta property="og:site_name" content="rainyleo blog">
-<meta property="og:description" content="google-site-verification: googlee985db6ebd1d6e74.html">
-<meta property="og:updated_time" content="2016-11-04T05:22:24.000Z">
+<meta property="og:description" content="CSS 中很多属性都可以有百分比值, 不同的属性对应的百分比意义也不一样.百分比是一种相对值, 在分析 CSS 属性的百分比含义时, 需要找到对应的参照物.
+属性下面分析可以用百分比表示的 CSS 属性以及对应的参照物.
+width: 相对于包含块(containing block)的 width. 对于绝对定位的元素, 它的包含块基于 block-level 元素, 百分比相对于那个元素的 pa">
+<meta property="og:updated_time" content="2016-12-29T17:04:51.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="rainyleo blog">
-<meta name="twitter:description" content="google-site-verification: googlee985db6ebd1d6e74.html">
+<meta name="twitter:title" content="CSS 百分比">
+<meta name="twitter:description" content="CSS 中很多属性都可以有百分比值, 不同的属性对应的百分比意义也不一样.百分比是一种相对值, 在分析 CSS 属性的百分比含义时, 需要找到对应的参照物.
+属性下面分析可以用百分比表示的 CSS 属性以及对应的参照物.
+width: 相对于包含块(containing block)的 width. 对于绝对定位的元素, 它的包含块基于 block-level 元素, 百分比相对于那个元素的 pa">
   
     <link rel="alternate" href="/atom.xml" title="rainyleo blog" type="application/atom+xml">
   
@@ -65,29 +71,64 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="page-undefined" class="article article-type-page" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-CSS百分比" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/googlee985db6ebd1d6e74.html" class="article-date">
-  <time datetime="2016-11-04T05:24:00.000Z" itemprop="datePublished">2016-11-04</time>
+    <a href="/2016/10/12/CSS百分比/" class="article-date">
+  <time datetime="2016-10-12T15:36:23.000Z" itemprop="datePublished">2016-10-12</time>
 </a>
     
   </div>
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CSS 百分比
+    </h1>
+  
+
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        google-site-verification: googlee985db6ebd1d6e74.html
+        <p>CSS 中很多属性都可以有百分比值, 不同的属性对应的百分比意义也不一样.<br>百分比是一种相对值, 在分析 CSS 属性的百分比含义时, 需要找到对应的参照物.</p>
+<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><p>下面分析可以用百分比表示的 CSS 属性以及对应的参照物.</p>
+<p><code>width</code>: 相对于包含块(containing block)的 width. 对于绝对定位的元素, 它的包含块基于 block-level 元素, 百分比相对于那个元素的 padding box 的 width.<br><code>height</code>: 相对于包含块的 height. 如果包含块没有指定的 height(例如取决于内容的 height),  并且这个元素没有绝对定位, 则值变为 ‘auto’. 根元素的 height 百分比相对于初始包含块(initial containing block). 注意: 对于绝对定位的元素, 它的包含块基于 block-level 元素, 百分比相对于那个元素的 padding box 的 height.<br><code>margin</code>: 相对于包含块的 width<br><code>padding</code>: 相对于包含块的 width<br><code>top, bottom</code>: 相对于包含块的 height<br><code>left, right</code>: 相对于包含块的 width<br><code>background-position</code>: 把图片的百分比位置定位到元素的 padding-box 百分比位置<br><code>font-size</code>: 相对于父元素的 font-size<br><code>line-height</code>: 相对于元素的 font-size<br><code>vertical-align</code>: 相对于元素的 line-height<br><code>border-radius</code>:<br><code>transform</code>: refer to the size of bounding box</p>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>当百分比值用于可继承属性时，只有结合参照值计算后的绝对值会被继承，而不是百分比值本身</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/googlee985db6ebd1d6e74.html" data-id="cixamg82f0002ytsepj5697ki" class="article-share-link">Share</a>
+      <a data-url="http://www.rainyleo.com/2016/10/12/CSS百分比/" data-id="cixamg8340003ytse7615evs1" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li></ul>
+
     </footer>
   </div>
   
     
+<nav id="article-nav">
+  
+    <a href="/2016/10/14/React-component-pattern/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          React中的组件分类
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/09/20/Javascript-promise/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JavaScript 异步(2)-Promise</div>
+    </a>
+  
+</nav>
+
   
 </article>
 
@@ -95,7 +136,7 @@
 
  <section id="comments">
    <!-- 多说评论框 start -->
-   <div class="ds-thread" data-thread-key="page-undefined" data-title="" data-url="http://www.rainyleo.com/googlee985db6ebd1d6e74.html"></div>
+   <div class="ds-thread" data-thread-key="post-CSS百分比" data-title="CSS 百分比" data-url="http://www.rainyleo.com/2016/10/12/CSS百分比/"></div>
    <!-- 多说评论框 end -->
    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
    <script type="text/javascript">
