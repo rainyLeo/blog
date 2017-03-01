@@ -62,7 +62,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Søk"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.rainyleo.com"></form>
@@ -71,50 +71,161 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Redux源码解读(5)-applyMiddleware" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <%- partial('post/date', {class_name: 'article-date', date_format: null}) %>
-    <%- partial('post/category') %>
+    <a href="/2016/11/01/Redux源码解读(5)-applyMiddleware/" class="article-date">
+  <time datetime="2016-11-01T09:48:51.000Z" itemprop="datePublished">2016-11-01</time>
+</a>
+    
   </div>
   <div class="article-inner">
-    <%- partial('post/gallery') %>
-    <% if (post.link || post.title){ %>
+    
+    
       <header class="article-header">
-        <%- partial('post/title', {class_name: 'article-title'}) %>
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Redux源码解读(5)-applyMiddleware
+    </h1>
+  
+
       </header>
-    <% } %>
+    
     <div class="article-entry" itemprop="articleBody">
-      <% if (post.excerpt && index){ %>
-        <%- post.excerpt %>
-        <% if (theme.excerpt_link){ %>
-          <p class="article-more-link">
-            <a href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %></a>
-          </p>
-        <% } %>
-      <% } else { %>
-        <%- post.content %>
-      <% } %>
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>applyMiddleware()</code>感觉应该是redux的5个API中最绕人一个了, 它往往作为<code>createStore()</code>的第三个参数<code>enhancer</code>, 那它<code>enhance</code>了什么呢? 答案就是<code>createStore()</code>里面的<code>dispatch</code>函数</p>
+<ul>
+<li><p>函数参数, 参数为包含几个不同<code>middleware</code>的数组或只有一个middleware函数,<br>每个<code>middleware</code>函数会返回一个接收3次参数的柯里化函数, 它有这样的语句<code>return ({ dispatch, getState }) =&gt; next =&gt; action =&gt;</code>, 见最下面的thunk-middleware</p>
+</li>
+<li><p>返回值, 返回一个接收2次参数的函数   </p>
+</li>
+</ul>
+<p>要把<code>applyMiddleware()</code>理解清楚, 需要联系<code>createStore()</code>, 它们会相互调用, 下面两处代码要结合起来看</p>
+<h2 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h2><a id="more"></a> 
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">applyMiddleware</span>(<span class="params">...middlewares</span>) </span>{
+  <span class="comment">// 返回一个柯里化的函数, 接收2次参数, createStore()函数中通过</span>
+  <span class="comment">// enhancer(createStore)(reducer, preloadedState)来调用这个返回的函数</span>
+  <span class="keyword">return</span> <span class="function">(<span class="params">createStore</span>) =&gt;</span> (reducer, preloadedState, enhancer) =&gt; {
+    <span class="comment">// 这里再次调用 createStore() 得到 store </span>
+    <span class="keyword">var</span> store = createStore(reducer, preloadedState, enhancer);
+    <span class="keyword">var</span> dispatch = store.dispatch;
+    <span class="keyword">var</span> chain = [];
+
+    <span class="comment">// 把 getState 和 dispatch 传递给每一个middleware作为它们的第1层参数</span>
+    <span class="keyword">var</span> middlewareAPI = {
+      <span class="attr">getState</span>: store.getState,
+      <span class="attr">dispatch</span>: <span class="function">(<span class="params">action</span>) =&gt;</span> dispatch(action)
+    };
+    chain = middlewares.map(<span class="function"><span class="params">middleware</span> =&gt;</span> middleware(middlewareAPI));
+
+    <span class="comment">// chain数组里从右往左依次调用dispatch, 把每一次调用的结果作为'参数'传递给下一个middleware</span>
+    <span class="comment">// 这里的'参数'就是 middleware 的第2层参数</span>
+    <span class="comment">// 注意到store的原dispatch作为第一次调用的参数</span>
+    dispatch = compose(...chain)(store.dispatch);  <span class="comment">// compose分析见第四篇</span>
+
+    <span class="comment">// 最后返回store, store中的 dispatch 用已经'enhance'的 dispatch 进行替换</span>
+    <span class="keyword">return</span> {
+      ...store,
+      dispatch
+    };
+  };
+}
+</code></pre>
+<p><code>createStore()</code>的相关代码, 与上面的<code>applyMiddleware()</code>结合起来看   </p>
+<pre><code class="js"><span class="keyword">const</span> store = createStore(
+  todoApp, <span class="comment">// reducer</span>
+  applyMiddleware(...middlewares)  <span class="comment">//applyMiddleware() 返回的函数作为 enhancer</span>
+);
+
+<span class="comment">// createStore()中相关代码:</span>
+<span class="function"><span class="keyword">function</span> <span class="title">createStore</span>(<span class="params">reducer, preloadedState, enhancer</span>) </span>{
+  <span class="comment">// 如果只传进2个参数, 且第二个为函数的话, 第二个参数赋值给 enhancer</span>
+  <span class="keyword">if</span> (<span class="keyword">typeof</span> preloadedState === <span class="string">'function'</span> &amp;&amp; <span class="keyword">typeof</span> enhancer === <span class="string">'undefined'</span>) {
+    enhancer = preloadedState;
+    preloadedState = <span class="literal">undefined</span>;
+  }
+  <span class="comment">// 检测 enhancer 为函数</span>
+  <span class="keyword">if</span> (<span class="keyword">typeof</span> enhancer !== <span class="string">'undefined'</span>) {
+    <span class="keyword">if</span> (<span class="keyword">typeof</span> enhancer !== <span class="string">'function'</span>) {
+      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected the enhancer to be a function.'</span>);
+    }
+    <span class="comment">// 注意: 这里和上面的 applyMiddle() 联系起来了</span>
+    <span class="comment">// 传递2次参数调用 enhancer, 即 applyMiddleware() 返回的那个函数 </span>
+    <span class="keyword">return</span> enhancer(createStore)(reducer, preloadedState);
+  }
+  <span class="comment">/* 以下省略... */</span>
+}
+</code></pre>
+<h2 id="thunk-middleware"><a href="#thunk-middleware" class="headerlink" title="thunk-middleware"></a>thunk-middleware</h2><p>下面来看一下redux-thunk这个middleware, 一般用于异步, 这个middleware一共只有14行  </p>
+<p>thunk-middleware 返回一个函数, 接收3次参数, 前2次参数在上面的<code>applyMiddle()</code>中已经传递过了, 那么第3层参数呢?<br>实际上第3层参数就是之后<code>dispatch</code>里面的参数<code>action</code>, 这个<code>action</code>通常是一个<code>actionCreator</code>返回的结果, 会有2种情况</p>
+<ul>
+<li>当这个<code>actionCreator</code>返回一个函数类型的<code>action</code>时, thunk-middleware 调用这个函数并返回结果, 函数的参数为第1次传递进去的原始的<code>dispatch</code>和<code>getState</code>, 还可以另外接受一个参数<code>extraArgument</code>.  </li>
+<li>当 <code>action</code>不是函数时, 直接返回第2层参数调用<code>action</code>的结果, 这里的<code>next</code>为前一个<code>middleware</code>包装过的<code>dispatch</code>, 如果只有这一个 middleware, 那么<code>next</code>就等于原始的<code>dispatch</code>, 那就相当于没有用这个 middleware 了, 因此在使用thunk-middleware通常<code>actionCreator</code>都返回一个函数  </li>
+</ul>
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">createThunkMiddleware</span>(<span class="params">extraArgument</span>) </span>{
+
+  <span class="keyword">return</span> <span class="function">(<span class="params">{ dispatch, getState }</span>) =&gt;</span> next =&gt; <span class="function"><span class="params">action</span> =&gt;</span> {
+    <span class="keyword">if</span> (<span class="keyword">typeof</span> action === <span class="string">'function'</span>) {
+      <span class="comment">// action 为函数时, 调用这个函数, 并返回结果, action 通过闭包能够访问第一层参数 dispatch 和 getState</span>
+      <span class="keyword">return</span> action(dispatch, getState, extraArgument);
+    }
+    <span class="comment">// action 不是函数时, 返回第3层参数调用的结果</span>
+    <span class="keyword">return</span> next(action);
+  };
+}
+<span class="comment">// 把返回的函数赋值给变量 thunk</span>
+<span class="keyword">const</span> thunk = createThunkMiddleware();
+thunk.withExtraArgument = createThunkMiddleware;
+
+<span class="keyword">export</span> <span class="keyword">default</span> thunk;
+</code></pre>
+
+      
     </div>
     <footer class="article-footer">
-      <a data-url="<%- post.permalink %>" data-id="<%= post._id %>" class="article-share-link"><%= __('share') %></a>
-      <% if (post.comments && config.disqus_shortname){ %>
-        <a href="<%- post.permalink %>#disqus_thread" class="article-comment-link"><%= __('comment') %></a>
-      <% } %>
-      <%- partial('post/tag') %>
+      <a data-url="http://www.rainyleo.com/2016/11/01/Redux源码解读(5)-applyMiddleware/" data-id="cizr6n51h000ndcseqlq397wr" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li></ul>
+
     </footer>
   </div>
-  <% if (!index){ %>
-    <%- partial('post/nav') %>
-  <% } %>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/10/30/Redux源码解读(4)-compose/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Redux源码解读(4)-compose</div>
+    </a>
+  
+</nav>
+
+  
 </article>
 
-<% if (!index && post.comments && config.disqus_shortname){ %>
-<section id="comments">
-  <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
-</section>
-<% } %></section>
+
+
+ <section id="comments">
+   <!-- 多说评论框 start -->
+   <div class="ds-thread" data-thread-key="post-Redux源码解读(5)-applyMiddleware" data-title="Redux源码解读(5)-applyMiddleware" data-url="http://www.rainyleo.com/2016/11/01/Redux源码解读(5)-applyMiddleware/"></div>
+   <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+   <script type="text/javascript">
+   var duoshuoQuery = {short_name:'rainyleo'};
+     (function() {
+       var ds = document.createElement('script');
+       ds.type = 'text/javascript';ds.async = true;
+       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+       ds.charset = 'UTF-8';
+       (document.getElementsByTagName('head')[0] 
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+     })();
+     </script>
+   <!-- 多说公共JS代码 end -->
+ </section>
+ </section>
         
           <aside id="sidebar">
   
@@ -132,7 +243,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
+    <h3 class="widget-title">Arkiv</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li></ul>
     </div>
@@ -142,7 +253,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">Siste innlegg</h3>
     <div class="widget">
       <ul>
         
