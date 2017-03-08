@@ -3,14 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>rainyleo blog</title>
+  <title>Vue 源码解读-响应式系统 | rainyleo blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="rainyleo blog">
-<meta property="og:url" content="http://www.rainyleo.com/index.html">
+  <meta name="description" content="Vue 的核心之一就是它的响应式系统, model 只是普通的 JavaScript 对象, 当你修改它时, view 会进行更新. 当把一个对象作为 data 属性传入 Vue 的实例中时, Vue 会遍历它上面的属性, 并用 Object.defineProperty 把它们转为 getter/setter, 以进行依赖追踪和通知更改. Vue 实现响应式的原理代码位于 src/core/ob">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue 源码解读-响应式系统">
+<meta property="og:url" content="http://www.rainyleo.com/2017/12/15/Vue-源码解读1-响应式系统/index.html">
 <meta property="og:site_name" content="rainyleo blog">
+<meta property="og:description" content="Vue 的核心之一就是它的响应式系统, model 只是普通的 JavaScript 对象, 当你修改它时, view 会进行更新. 当把一个对象作为 data 属性传入 Vue 的实例中时, Vue 会遍历它上面的属性, 并用 Object.defineProperty 把它们转为 getter/setter, 以进行依赖追踪和通知更改. Vue 实现响应式的原理代码位于 src/core/ob">
+<meta property="og:updated_time" content="2017-03-08T15:58:51.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="rainyleo blog">
+<meta name="twitter:title" content="Vue 源码解读-响应式系统">
+<meta name="twitter:description" content="Vue 的核心之一就是它的响应式系统, model 只是普通的 JavaScript 对象, 当你修改它时, view 会进行更新. 当把一个对象作为 data 属性传入 Vue 的实例中时, Vue 会遍历它上面的属性, 并用 Object.defineProperty 把它们转为 getter/setter, 以进行依赖追踪和通知更改. Vue 实现响应式的原理代码位于 src/core/ob">
   
     <link rel="alternate" href="/atom.xml" title="rainyleo blog" type="application/atom+xml">
   
@@ -61,9 +65,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-Vue-源码解读1-响应式系统" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Vue-源码解读1-响应式系统" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/12/15/Vue-源码解读1-响应式系统/" class="article-date">
   <time datetime="2017-12-14T16:43:04.000Z" itemprop="datePublished">2017-12-15</time>
@@ -76,8 +78,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/15/Vue-源码解读1-响应式系统/">Vue 源码解读-响应式系统</a>
+    <h1 class="article-title" itemprop="name">
+      Vue 源码解读-响应式系统
     </h1>
   
 
@@ -118,482 +120,41 @@ This is used for both the $watch() api and directives.</code></p>
     </footer>
   </div>
   
-</article>
-
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-Redux源码解读(5)-applyMiddleware" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/11/01/Redux源码解读(5)-applyMiddleware/" class="article-date">
-  <time datetime="2016-11-01T09:48:51.000Z" itemprop="datePublished">2016-11-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/01/Redux源码解读(5)-applyMiddleware/">Redux源码解读(5)-applyMiddleware</a>
-    </h1>
+    <a href="/2016/11/01/Redux源码解读(5)-applyMiddleware/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ouder</strong>
+      <div class="article-nav-title">Redux源码解读(5)-applyMiddleware</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>applyMiddleware()</code>感觉应该是redux的5个API中最绕人一个了, 它往往作为<code>createStore()</code>的第三个参数<code>enhancer</code>, 那它<code>enhance</code>了什么呢? 答案就是<code>createStore()</code>里面的<code>dispatch</code>函数</p>
-<ul>
-<li><p>函数参数, 参数为包含几个不同<code>middleware</code>的数组或只有一个middleware函数,<br>每个<code>middleware</code>函数会返回一个接收3次参数的柯里化函数, 它有这样的语句<code>return ({ dispatch, getState }) =&gt; next =&gt; action =&gt;</code>, 见最下面的thunk-middleware</p>
-</li>
-<li><p>返回值, 返回一个接收2次参数的函数   </p>
-</li>
-</ul>
-<p>要把<code>applyMiddleware()</code>理解清楚, 需要联系<code>createStore()</code>, 它们会相互调用, 下面两处代码要结合起来看</p>
-<h2 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h2>
-        
-          <p class="article-more-link">
-            <a href="/2016/11/01/Redux源码解读(5)-applyMiddleware/#more">阅读更多</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/11/01/Redux源码解读(5)-applyMiddleware/" data-id="cj015fa65000tgbsexj716l3y" class="article-share-link">Delen</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
 
 
 
-  
-    <article id="post-Redux源码解读(4)-compose" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/10/30/Redux源码解读(4)-compose/" class="article-date">
-  <time datetime="2016-10-30T12:52:01.000Z" itemprop="datePublished">2016-10-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/30/Redux源码解读(4)-compose/">Redux源码解读(4)-compose</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>compose这个函数在函数式编程中很常见, 它把一个函数函数的结果传进另一个函数中, 例如<code>compose(f, g, h)(x)</code> 返回 <code>f(g(h(x)))</code></p>
-<p>下面先看一个简化版本的compose以便理解   </p>
-<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">compose</span>(<span class="params">f, g</span>) </span>{
-  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>{
-    <span class="keyword">return</span> f.call(<span class="keyword">this</span>, g.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>));
-  };
-  <span class="comment">/* 如果只接收一个参数, 也可以这样写
-  return function(x) {
-    return f(g(x));
-  };
-  */</span>
-}  
-
-<span class="keyword">const</span> square = <span class="function"><span class="params">x</span> =&gt;</span> x * x;
-<span class="keyword">const</span> sum = <span class="function">(<span class="params">x, y</span>) =&gt;</span> x + y;
-<span class="keyword">const</span> res = compose(square, sum);
-res(<span class="number">2</span>, <span class="number">3</span>); <span class="comment">// 25</span>
-</code></pre>
-        
-          <p class="article-more-link">
-            <a href="/2016/10/30/Redux源码解读(4)-compose/#more">阅读更多</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/10/30/Redux源码解读(4)-compose/" data-id="cj015fa64000rgbsecerxi2vg" class="article-share-link">Delen</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Redux源码解读(3)-bindActionCreators" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/10/29/Redux源码解读(3)-bindActionCreators/" class="article-date">
-  <time datetime="2016-10-29T09:52:01.000Z" itemprop="datePublished">2016-10-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/29/Redux源码解读(3)-bindActionCreators/">Redux源码解读(3)-bindActionCreators</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
-<li><p>函数参数, <code>bindActionCreators</code>接收2个参数, <code>actionCreators</code>和<code>dispatch</code>,<br><code>actionCreators</code>可以是一个函数, 也可以是包含几个函数的对象  </p>
-</li>
-<li><p>返回值, 返回值对应<code>actionCreators</code>这个参数, 当它是函数时, 返回值是一个函数, 这个返回的函数接收一个参数传入<code>actionCreator</code>得到 <code>action</code>, 再调用<code>dispatch</code>; 当它是包含几个函数的对象时, 返回值为包含这几个函数调用结果的对象</p>
-</li>
-</ul>
-<p><code>bindActionCreators()</code> 是函数式编程中的组合函数<code>compose</code>,  在下一篇的compose中会提到, 组合函数形如<br><code>compose(f, g)(...args) --&gt; g(f(...args))</code>, 在这里<code>f</code>和<code>g</code>分别为参数<code>actionCreator</code>和<code>dispatch</code> </p>
-<h2 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h2>
-        
-          <p class="article-more-link">
-            <a href="/2016/10/29/Redux源码解读(3)-bindActionCreators/#more">阅读更多</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/10/29/Redux源码解读(3)-bindActionCreators/" data-id="cj015fa5w000lgbsey1796dna" class="article-share-link">Delen</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Redux源码解读(2)-combineReducers" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/10/29/Redux源码解读(2)-combineReducers/" class="article-date">
-  <time datetime="2016-10-29T00:27:31.000Z" itemprop="datePublished">2016-10-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/29/Redux源码解读(2)-combineReducers/">Redux源码解读(2)-combineReducers</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
-<li>函数参数, 接收一个包含几个不同reducer函数的对象 </li>
-<li>返回值, 返回一个合并的reducer.   </li>
-</ul>
-<p>当这个合并的<code>reducer</code>接收到<code>action</code>时, 会调用每一个子<code>reducer</code>, 把它们的结果放到一个<code>state</code>对象中, state 对象的属性对应各自 reducer 中的 state </p>
-<h2 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h2>
-        
-          <p class="article-more-link">
-            <a href="/2016/10/29/Redux源码解读(2)-combineReducers/#more">阅读更多</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/10/29/Redux源码解读(2)-combineReducers/" data-id="cj015fa5q000egbsecaoacenn" class="article-share-link">Delen</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Redux源码解读(1)-createStore" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/10/28/Redux源码解读(1)-createStore/" class="article-date">
-  <time datetime="2016-10-28T11:51:59.000Z" itemprop="datePublished">2016-10-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/28/Redux源码解读(1)-createStore/">Redux源码解读(1)-createStore</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Redux一共有5个公共方法, 先说第一个<code>createStore()</code>  </p>
-<ul>
-<li>函数参数, 可以接收3个参数, <code>reducer</code>, <code>preloadedState</code>, <code>enhancer</code>, 后两个是可选的</li>
-<li><p>返回值, 返回一个object, 它包含4个公有方法, 分别为<code>getStore()</code>, <code>subscribe(listener)</code>, <code>dispatch(action)</code>, <code>replaceReducer(nextReducer)</code>  </p>
-<p>createStore函数使用了设计模式中的暴露模块模式(Revealing Module Pattern)</p>
-</li>
-</ul>
-<h2 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h2>
-        
-          <p class="article-more-link">
-            <a href="/2016/10/28/Redux源码解读(1)-createStore/#more">阅读更多</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/10/28/Redux源码解读(1)-createStore/" data-id="cj015fa5t000jgbsetpgi9c15" class="article-share-link">Delen</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-flex-layout" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/10/26/flex-layout/" class="article-date">
-  <time datetime="2016-10-26T03:28:48.000Z" itemprop="datePublished">2016-10-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/26/flex-layout/">flex layout</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Flex-盒模型和术语"><a href="#Flex-盒模型和术语" class="headerlink" title="Flex 盒模型和术语"></a>Flex 盒模型和术语</h2><p>Flex is a CSS box model optimized for user interface design. In the flex layout model, the children of a flex container can be laid out in any direction, and can “flex” their sizes, either growing to fill unused space or shrinking to avoid overflowing the parent. Both horizontal and vertical alignment of the children can be easily manipulated. Nesting of these boxes (horizontal inside vertical, or vertical inside horizontal) can be used to build layouts in two dimensions.</p>
-<p>The flexbox layout is direction-agnostic as opposed to the regular layouts (block which is vertically-based and inline which is horizontally-based).</p>
-<ul>
-<li>flex container: 元素的 display 属性为 flex 或 inline-flex. 文档流中 flex container 的子元素叫做 flex items, 它们以 flex layout model 进行布局.</li>
-<li>flex item:</li>
-<li>main axis</li>
-<li>cross axis</li>
-</ul>
-        
-          <p class="article-more-link">
-            <a href="/2016/10/26/flex-layout/#more">阅读更多</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/10/26/flex-layout/" data-id="cj015fa67000wgbse9u95707h" class="article-share-link">Delen</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-React-component-pattern" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/10/14/React-component-pattern/" class="article-date">
-  <time datetime="2016-10-14T02:51:08.000Z" itemprop="datePublished">2016-10-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/14/React-component-pattern/">React中的组件分类</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0#.z97goyfuy">原文链接</a></p>
-<p>React 中一切都是组件化的, 把组件分为2种类型有利于开发和重用. 可以把这两种类型称为<em>容器组件(Container component)</em> 和 <em>呈现组件(Presentational component)</em>.  </p>
-<p>它们有什么区别呢?  </p>
-<p><strong>呈现组件</strong>的特点:  </p>
-<ul>
-<li>关注UI的展现</li>
-<li>可以在内部包含呈现和容器组件, 通常有一些DOM标签和自己的样式</li>
-<li>仅从<code>props</code>接收数据和回调  </li>
-<li>通常没有自己的<code>state</code></li>
-<li>通常可以写成函数组件, 除非需要 state 或生命周期函数</li>
-<li>和应用中其他部分没有关联, 比如 Redux</li>
-<li>不关心数据是怎样传递和修改的</li>
-<li>可以有<code>this.props.children</code></li>
-<li>通常是手写的</li>
-<li>例如: <em>Page, Sidebar, Story, UserInfo, List</em></li>
-</ul>
-        
-          <p class="article-more-link">
-            <a href="/2016/10/14/React-component-pattern/#more">阅读更多</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/10/14/React-component-pattern/" data-id="cj015fa5m000bgbsekg1g1kuz" class="article-share-link">Delen</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-CSS百分比" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/10/12/CSS百分比/" class="article-date">
-  <time datetime="2016-10-12T15:36:23.000Z" itemprop="datePublished">2016-10-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/12/CSS百分比/">CSS 百分比</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>CSS 中很多属性都可以有百分比值, 不同的属性对应的百分比意义也不一样.<br>百分比是一种相对值, 在分析 CSS 属性的百分比含义时, 需要找到对应的参照物.</p>
-<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><p>下面分析可以用百分比表示的 CSS 属性以及对应的参照物.</p>
-<p><code>width</code>: 相对于包含块(containing block)的 width. 对于绝对定位的元素, 它的包含块基于 block-level 元素, 百分比相对于那个元素的 padding box 的 width.<br><code>height</code>: 相对于包含块的 height. 如果包含块没有指定的 height(例如取决于内容的 height),  并且这个元素没有绝对定位, 则值变为 ‘auto’. 根元素的 height 百分比相对于初始包含块(initial containing block). 注意: 对于绝对定位的元素, 它的包含块基于 block-level 元素, 百分比相对于那个元素的 padding box 的 height.<br><code>margin</code>: 相对于包含块的 width<br><code>padding</code>: 相对于包含块的 width<br><code>top, bottom</code>: 相对于包含块的 height<br><code>left, right</code>: 相对于包含块的 width<br><code>background-position</code>: 把图片的百分比位置定位到元素的 padding-box 百分比位置<br><code>font-size</code>: 相对于父元素的 font-size<br><code>line-height</code>: 相对于元素的 font-size<br><code>vertical-align</code>: 相对于元素的 line-height<br><code>border-radius</code>:<br><code>transform</code>: refer to the size of bounding box</p>
-<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>当百分比值用于可继承属性时，只有结合参照值计算后的绝对值会被继承，而不是百分比值本身</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/10/12/CSS百分比/" data-id="cj015fa5h0008gbse3cioxs41" class="article-share-link">Delen</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Javascript-promise" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/09/20/Javascript-promise/" class="article-date">
-  <time datetime="2016-09-20T12:22:42.000Z" itemprop="datePublished">2016-09-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/20/Javascript-promise/">JavaScript 异步(2)-Promise</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>promise 是一个保存异步操作结果的容器(placeholder). 异步操作除了给函数传递回调, 或订阅事件, 也可以让它返回一个 promise</p>
-<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>新建一个 Promise 对象可以用下面的语法,<br><code>new Promise( /* executor */ function(resolve, reject) { ... } );</code> </p>
-<p><strong>参数: executor</strong></p>
-<p>Promise 接收一个函数作为参数, 这个函数叫做 executor. 当新建 Promise 时 executor 会立即执行, 它接收2个函数<code>resolve</code>和<code>reject</code>作为参数,当它们被调用时会分别<code>resolve</code>,  <code>reject</code>这个 Promise , executor 通常会初始化一些异步操作, 当这些操作完成时调用 resolve 或 reject 来 resolve 这个 promise 或者出错时 reject 它 </p>
-<p>调用 <code>resolve()</code> 会触发异步操作, 传递给<code>then()</code>和<code>catch()</code>的函数会被异步执行, 因为它们被添加在了<code>job queue</code>.<br>每一次调用<code>then()</code>或<code>catch()</code>实际上会创建并返回另一个 promise. 当第一个 promise 已经 fulfilled 或者 rejected 之后, 这第二个才会 resolve</p>
-        
-          <p class="article-more-link">
-            <a href="/2016/09/20/Javascript-promise/#more">阅读更多</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/09/20/Javascript-promise/" data-id="cj015fa5r000ggbseyxcf4t4w" class="article-share-link">Delen</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-
-
-  <nav id="page-nav">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
-  </nav>
-</section>
+ <section id="comments">
+   <!-- 多说评论框 start -->
+   <div class="ds-thread" data-thread-key="post-Vue-源码解读1-响应式系统" data-title="Vue 源码解读-响应式系统" data-url="http://www.rainyleo.com/2017/12/15/Vue-源码解读1-响应式系统/"></div>
+   <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+   <script type="text/javascript">
+   var duoshuoQuery = {short_name:'rainyleo'};
+     (function() {
+       var ds = document.createElement('script');
+       ds.type = 'text/javascript';ds.async = true;
+       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+       ds.charset = 'UTF-8';
+       (document.getElementsByTagName('head')[0] 
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+     })();
+     </script>
+   <!-- 多说公共JS代码 end -->
+ </section>
+ </section>
         
           <aside id="sidebar">
   
