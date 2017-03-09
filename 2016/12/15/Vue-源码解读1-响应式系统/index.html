@@ -3,23 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>JavaScript 异步(1)-Event loop | rainyleo blog</title>
+  <title>Vue 源码解读-响应式系统 | rainyleo blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="概述Event loop 是实现异步的一种机制, JS runtime 通过这种机制来处理不同的任务(task), 这些任务包括 events,callback, parsing, DOM manipulation, Using a resource等等  
-TaskJavaScript runtime 把一切抽象为 task, 用户操作, I/O操作, 网络请求等等都是一个个的 task, 这些">
+  <meta name="description" content="Vue 的核心之一就是它的响应式系统, model 只是普通的 JavaScript 对象, 当修改它时, view 会进行更新. 当把一个对象作为 data 属性传入 Vue 的实例中时, Vue 会遍历它上面的属性, 并用 Object.defineProperty 把它们转为 getter/setter, 以进行依赖追踪和通知更改. Vue 实现响应式的原理代码位于 src/core/obs">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JavaScript 异步(1)-Event loop">
-<meta property="og:url" content="http://www.rainyleo.com/2016/09/16/JavaScript_Event_Loop/index.html">
+<meta property="og:title" content="Vue 源码解读-响应式系统">
+<meta property="og:url" content="http://www.rainyleo.com/2016/12/15/Vue-源码解读1-响应式系统/index.html">
 <meta property="og:site_name" content="rainyleo blog">
-<meta property="og:description" content="概述Event loop 是实现异步的一种机制, JS runtime 通过这种机制来处理不同的任务(task), 这些任务包括 events,callback, parsing, DOM manipulation, Using a resource等等  
-TaskJavaScript runtime 把一切抽象为 task, 用户操作, I/O操作, 网络请求等等都是一个个的 task, 这些">
-<meta property="og:image" content="http://www.rainyleo.com/event_loop.jpg">
-<meta property="og:updated_time" content="2016-11-07T12:48:20.000Z">
+<meta property="og:description" content="Vue 的核心之一就是它的响应式系统, model 只是普通的 JavaScript 对象, 当修改它时, view 会进行更新. 当把一个对象作为 data 属性传入 Vue 的实例中时, Vue 会遍历它上面的属性, 并用 Object.defineProperty 把它们转为 getter/setter, 以进行依赖追踪和通知更改. Vue 实现响应式的原理代码位于 src/core/obs">
+<meta property="og:updated_time" content="2017-03-09T13:14:28.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JavaScript 异步(1)-Event loop">
-<meta name="twitter:description" content="概述Event loop 是实现异步的一种机制, JS runtime 通过这种机制来处理不同的任务(task), 这些任务包括 events,callback, parsing, DOM manipulation, Using a resource等等  
-TaskJavaScript runtime 把一切抽象为 task, 用户操作, I/O操作, 网络请求等等都是一个个的 task, 这些">
-<meta name="twitter:image" content="http://www.rainyleo.com/event_loop.jpg">
+<meta name="twitter:title" content="Vue 源码解读-响应式系统">
+<meta name="twitter:description" content="Vue 的核心之一就是它的响应式系统, model 只是普通的 JavaScript 对象, 当修改它时, view 会进行更新. 当把一个对象作为 data 属性传入 Vue 的实例中时, Vue 会遍历它上面的属性, 并用 Object.defineProperty 把它们转为 getter/setter, 以进行依赖追踪和通知更改. Vue 实现响应式的原理代码位于 src/core/obs">
   
     <link rel="alternate" href="/atom.xml" title="rainyleo blog" type="application/atom+xml">
   

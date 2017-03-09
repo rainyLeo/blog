@@ -52,7 +52,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Zoeken"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.rainyleo.com"></form>
@@ -63,210 +63,185 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-JavaScript_Event_Loop" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/09/16/JavaScript_Event_Loop/" class="article-date">
-  <time datetime="2016-09-16T01:57:45.000Z" itemprop="datePublished">2016-09-16</time>
-</a>
-    
+    <%- partial('post/date', {class_name: 'article-date', date_format: null}) %>
+    <%- partial('post/category') %>
   </div>
   <div class="article-inner">
-    
-    
+    <%- partial('post/gallery') %>
+    <% if (post.link || post.title){ %>
       <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/16/JavaScript_Event_Loop/">JavaScript 异步(1)-Event loop</a>
-    </h1>
-  
-
+        <%- partial('post/title', {class_name: 'article-title'}) %>
       </header>
-    
+    <% } %>
     <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Event loop 是实现异步的一种机制, JS runtime 通过这种机制来处理不同的任务(task), 这些任务包括 events,callback, parsing, DOM manipulation, Using a resource等等  </p>
-<h3 id="Task"><a href="#Task" class="headerlink" title="Task"></a>Task</h3><p>JavaScript runtime 把一切抽象为 task, 用户操作, I/O操作, 网络请求等等都是一个个的 task, 这些 task 被放在不同的 queue 中等待执行.<br>task queue 分为两大类, 分别是 macrotask queue 和 microtask quque, macrotask queue 通常称为 task queue, 有时候也叫做 message queue 或 callback queue, microtask queue 在 ES6 中也叫做 job queue.</p>
-<p><strong>task queue (macrotask queue)</strong></p>
-<ul>
-<li>task queue 是包含 tasks 的有序队列, 先进先出(FIFO)的规则</li>
-<li>一个 event loop 有1个或多个 task queue </li>
-</ul>
-<p>每一个task(macro)都来自一个 <em>task source</em>. 同一个来源的 task 形成一个 task queue, 不同来源的 task 组成不同的task queue. 例如浏览器可能会为鼠标和键盘事件建立一个 task queue, 为其他 task 建立另一个 task queue, 浏览器可能为鼠标和键盘的 task queue设置更高的优先级<br>
-        
+      <% if (post.excerpt && index){ %>
+        <%- post.excerpt %>
+        <% if (theme.excerpt_link){ %>
           <p class="article-more-link">
-            <a href="/2016/09/16/JavaScript_Event_Loop/#more">阅读更多</a>
+            <a href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %></a>
           </p>
-        
-      
+        <% } %>
+      <% } else { %>
+        <%- post.content %>
+      <% } %>
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/09/16/JavaScript_Event_Loop/" data-id="cj015p59n0008pqseux6fhu8u" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
-
+      <a data-url="<%- post.permalink %>" data-id="<%= post._id %>" class="article-share-link"><%= __('share') %></a>
+      <% if (post.comments && config.disqus_shortname){ %>
+        <a href="<%- post.permalink %>#disqus_thread" class="article-comment-link"><%= __('comment') %></a>
+      <% } %>
+      <%- partial('post/tag') %>
     </footer>
   </div>
-  
+  <% if (!index){ %>
+    <%- partial('post/nav') %>
+  <% } %>
 </article>
 
-
-
+<% if (!index && post.comments && config.disqus_shortname){ %>
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+<% } %>
   
-    <article id="post-JavaScript_Object_Methods" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/08/20/JavaScript_Object_Methods/" class="article-date">
-  <time datetime="2016-08-20T11:28:35.000Z" itemprop="datePublished">2016-08-20</time>
-</a>
-    
+    <%- partial('post/date', {class_name: 'article-date', date_format: null}) %>
+    <%- partial('post/category') %>
   </div>
   <div class="article-inner">
-    
-    
+    <%- partial('post/gallery') %>
+    <% if (post.link || post.title){ %>
       <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/20/JavaScript_Object_Methods/">一张图看明白JavaScript中对象的方法</a>
-    </h1>
-  
-
+        <%- partial('post/title', {class_name: 'article-title'}) %>
       </header>
-    
+    <% } %>
     <div class="article-entry" itemprop="articleBody">
-      
-        <p>JavaScript 的对象有很多方法容易弄混淆, 下面用一张PPT进行整理如下:<br>
-        
+      <% if (post.excerpt && index){ %>
+        <%- post.excerpt %>
+        <% if (theme.excerpt_link){ %>
           <p class="article-more-link">
-            <a href="/2016/08/20/JavaScript_Object_Methods/#more">阅读更多</a>
+            <a href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %></a>
           </p>
-        
-      
+        <% } %>
+      <% } else { %>
+        <%- post.content %>
+      <% } %>
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/08/20/JavaScript_Object_Methods/" data-id="cj015p59o0009pqselz4d8n4r" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
-
+      <a data-url="<%- post.permalink %>" data-id="<%= post._id %>" class="article-share-link"><%= __('share') %></a>
+      <% if (post.comments && config.disqus_shortname){ %>
+        <a href="<%- post.permalink %>#disqus_thread" class="article-comment-link"><%= __('comment') %></a>
+      <% } %>
+      <%- partial('post/tag') %>
     </footer>
   </div>
-  
+  <% if (!index){ %>
+    <%- partial('post/nav') %>
+  <% } %>
 </article>
 
-
-
+<% if (!index && post.comments && config.disqus_shortname){ %>
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+<% } %>
   
-    <article id="post-Array-methods" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/08/15/Array-methods/" class="article-date">
-  <time datetime="2016-08-15T09:41:54.000Z" itemprop="datePublished">2016-08-15</time>
-</a>
-    
+    <%- partial('post/date', {class_name: 'article-date', date_format: null}) %>
+    <%- partial('post/category') %>
   </div>
   <div class="article-inner">
-    
-    
+    <%- partial('post/gallery') %>
+    <% if (post.link || post.title){ %>
       <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/15/Array-methods/">JavaScript中数组迭代方法的简单实现</a>
-    </h1>
-  
-
+        <%- partial('post/title', {class_name: 'article-title'}) %>
       </header>
-    
+    <% } %>
     <div class="article-entry" itemprop="articleBody">
-      
-        <p>JavaScript 中数组迭代方法的简化实现  </p>
-<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><pre><code class="js"><span class="built_in">Array</span>.prototype.map = <span class="function"><span class="keyword">function</span>(<span class="params">fn <span class="regexp">/*, thisArg*/</span></span>) </span>{
-  <span class="keyword">var</span> res = [];
-  <span class="keyword">var</span> thisArg;
-  <span class="keyword">if</span> (<span class="keyword">this</span> == <span class="literal">null</span>) {
-    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'Array.prototype.map2 called on null or undefined'</span>);
-  }
-  <span class="keyword">if</span> (<span class="keyword">typeof</span> fn !== <span class="string">'function'</span>) {
-    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(fn + <span class="string">' is not a function'</span>);
-  }
-  <span class="keyword">if</span> (<span class="built_in">arguments</span>.length &gt; <span class="number">1</span>) {
-    thisArg = <span class="built_in">arguments</span>[<span class="number">1</span>];
-  }
-
-  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.length; i++) {
-    <span class="keyword">if</span> (i <span class="keyword">in</span> <span class="keyword">this</span>) {
-      res.push(fn.call(thisArg, <span class="keyword">this</span>[i], i, <span class="keyword">this</span>));
-    }
-  }
-  <span class="keyword">return</span> res;
-};
-</code></pre>
-        
+      <% if (post.excerpt && index){ %>
+        <%- post.excerpt %>
+        <% if (theme.excerpt_link){ %>
           <p class="article-more-link">
-            <a href="/2016/08/15/Array-methods/#more">阅读更多</a>
+            <a href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %></a>
           </p>
-        
-      
+        <% } %>
+      <% } else { %>
+        <%- post.content %>
+      <% } %>
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/08/15/Array-methods/" data-id="cj015p59c0003pqsenmanaq8z" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
-
+      <a data-url="<%- post.permalink %>" data-id="<%= post._id %>" class="article-share-link"><%= __('share') %></a>
+      <% if (post.comments && config.disqus_shortname){ %>
+        <a href="<%- post.permalink %>#disqus_thread" class="article-comment-link"><%= __('comment') %></a>
+      <% } %>
+      <%- partial('post/tag') %>
     </footer>
   </div>
-  
+  <% if (!index){ %>
+    <%- partial('post/nav') %>
+  <% } %>
 </article>
 
-
-
+<% if (!index && post.comments && config.disqus_shortname){ %>
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+<% } %>
   
-    <article id="post-快捷键" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/08/13/快捷键/" class="article-date">
-  <time datetime="2016-08-13T12:30:13.000Z" itemprop="datePublished">2016-08-13</time>
-</a>
-    
+    <%- partial('post/date', {class_name: 'article-date', date_format: null}) %>
+    <%- partial('post/category') %>
   </div>
   <div class="article-inner">
-    
-    
+    <%- partial('post/gallery') %>
+    <% if (post.link || post.title){ %>
       <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/13/快捷键/">Atom快捷键(Mac)</a>
-    </h1>
-  
-
+        <%- partial('post/title', {class_name: 'article-title'}) %>
       </header>
-    
+    <% } %>
     <div class="article-entry" itemprop="articleBody">
-      
-        <p>Atom快捷键整理 </p>
-<h2 id="光标移动"><a href="#光标移动" class="headerlink" title="光标移动"></a>光标移动</h2><p><code>ctrl-p</code> 上<br><code>ctrl-n</code> 下<br><code>ctrl-f</code> 左<br><code>ctrl-b</code> 右<br><code>ctrl-e</code> 移动至一行结尾<br><code>ctrl-a</code> 移动到一行开头<br><code>alt-b</code> <code>ctrl-j</code> 移动到单词开头<br><code>alt-f</code>  <code>ctrl-l</code> 移动到单词结尾<br><code>cmd-up</code> 移动到文件开头<br><code>cmd-down</code> 移动到文件结束<br><code>ctrl-g</code> 移动到指定行<br><code>cmd-r</code> 在函数之间跳转<br>
-        
+      <% if (post.excerpt && index){ %>
+        <%- post.excerpt %>
+        <% if (theme.excerpt_link){ %>
           <p class="article-more-link">
-            <a href="/2016/08/13/快捷键/#more">阅读更多</a>
+            <a href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %></a>
           </p>
-        
-      
+        <% } %>
+      <% } else { %>
+        <%- post.content %>
+      <% } %>
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/08/13/快捷键/" data-id="cj015p5aa000wpqse2y22byam" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/atom/">atom</a></li></ul>
-
+      <a data-url="<%- post.permalink %>" data-id="<%= post._id %>" class="article-share-link"><%= __('share') %></a>
+      <% if (post.comments && config.disqus_shortname){ %>
+        <a href="<%- post.permalink %>#disqus_thread" class="article-comment-link"><%= __('comment') %></a>
+      <% } %>
+      <%- partial('post/tag') %>
     </footer>
   </div>
-  
+  <% if (!index){ %>
+    <%- partial('post/nav') %>
+  <% } %>
 </article>
 
-
-
+<% if (!index && post.comments && config.disqus_shortname){ %>
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+<% } %>
   
 
 
@@ -291,9 +266,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
+    <h3 class="widget-title">Archieven</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -301,12 +276,12 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">Recente berichten</h3>
     <div class="widget">
       <ul>
         
           <li>
-            <a href="/2017/12/15/Vue-源码解读1-响应式系统/">Vue 源码解读-响应式系统</a>
+            <a href="/2016/12/15/Vue-源码解读1-响应式系统/">Vue 源码解读-响应式系统</a>
           </li>
         
           <li>
