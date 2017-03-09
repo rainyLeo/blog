@@ -61,7 +61,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Zoeken"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.rainyleo.com"></form>
@@ -70,50 +70,164 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-flex-layout" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <%- partial('post/date', {class_name: 'article-date', date_format: null}) %>
-    <%- partial('post/category') %>
+    <a href="/2016/10/26/flex-layout/" class="article-date">
+  <time datetime="2016-10-26T03:28:48.000Z" itemprop="datePublished">2016-10-26</time>
+</a>
+    
   </div>
   <div class="article-inner">
-    <%- partial('post/gallery') %>
-    <% if (post.link || post.title){ %>
+    
+    
       <header class="article-header">
-        <%- partial('post/title', {class_name: 'article-title'}) %>
+        
+  
+    <h1 class="article-title" itemprop="name">
+      flex layout
+    </h1>
+  
+
       </header>
-    <% } %>
+    
     <div class="article-entry" itemprop="articleBody">
-      <% if (post.excerpt && index){ %>
-        <%- post.excerpt %>
-        <% if (theme.excerpt_link){ %>
-          <p class="article-more-link">
-            <a href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %></a>
-          </p>
-        <% } %>
-      <% } else { %>
-        <%- post.content %>
-      <% } %>
+      
+        <h2 id="Flex-盒模型和术语"><a href="#Flex-盒模型和术语" class="headerlink" title="Flex 盒模型和术语"></a>Flex 盒模型和术语</h2><p>Flex is a CSS box model optimized for user interface design. In the flex layout model, the children of a flex container can be laid out in any direction, and can “flex” their sizes, either growing to fill unused space or shrinking to avoid overflowing the parent. Both horizontal and vertical alignment of the children can be easily manipulated. Nesting of these boxes (horizontal inside vertical, or vertical inside horizontal) can be used to build layouts in two dimensions.</p>
+<p>The flexbox layout is direction-agnostic as opposed to the regular layouts (block which is vertically-based and inline which is horizontally-based).</p>
+<ul>
+<li>flex container: 元素的 display 属性为 flex 或 inline-flex. 文档流中 flex container 的子元素叫做 flex items, 它们以 flex layout model 进行布局.</li>
+<li>flex item:</li>
+<li>main axis</li>
+<li>cross axis</li>
+</ul>
+<a id="more"></a>
+<p><img src="box-model.svg" alt="flex"></p>
+<h2 id="Flex-container"><a href="#Flex-container" class="headerlink" title="Flex container"></a>Flex container</h2><p>flex container 为它的 contens 建立一个新的 flex formatting context. 这和建立一个 block formatting context 一样, 除了使用的是 flex layout 而不是 block layout.</p>
+<p>Flex layout so items have equal height</p>
+<p><strong>属性</strong>:</p>
+<ol>
+<li><p><code>display: flex</code></p>
+</li>
+<li><p><code>flex-flow: row wrap</code><br>flex-flow 属性是 flex-direction 和 flex-wrap 属性的缩写</p>
+</li>
+<li><p><code>flex-direction: row</code><br>主轴方向</p>
+</li>
+<li><p><code>flex-wrap: wrap</code><br>允许子元素多行布局, 当内容分为多行时, 每一行都独立布局. flexible lengths, justify-content 和 align-self 属性只考虑同一行的子元素.</p>
+</li>
+<li><p><code>justify-content</code><br>flex items 沿着 flex container 主轴方向的布局.</p>
+<ul>
+<li>flex-start: 默认值, 行的起点, item 之间无 space</li>
+<li>flex-end: 行的终点, item 之间无 space</li>
+<li>center: 在行中间, 第一个和最后一个子元素距离 container 距离一样, item 之间无 space</li>
+<li>space-between: 在行内均分, 第一个和最后一个子元素紧靠着 container, item 之间的 space 一样</li>
+<li>space-around: 在行内均分, 第一个和最后一个子元素距离 container 的距离是 flex item 之间距离的一半</li>
+</ul>
+</li>
+</ol>
+<p><img src="justify-content.svg" alt="justify-content"><br>该属性仅当 flex items 有定义 width 并且它们的的总宽度小于 flex container 的宽度</p>
+<ol>
+<li><code>align-items</code><br>flex items 沿着 flex container 侧轴方向的布局.<br>align-self allows this default alignment to be overridden for individual flex items.<br>By default, flex items stretch to fit the container, so are all equal heights</li>
+</ol>
+<p><img src="align-items.svg" alt="align-items"></p>
+<ol>
+<li><code>align-content</code><br>当侧轴有多于空间时, 在 flex container 内布局多行. 和 justify-content 属性在主轴布局类似.<br>该属性对单行的 flex container 无效.</li>
+</ol>
+<p><img src="align-content.svg" alt="align-content"></p>
+<h2 id="Flex-item"><a href="#Flex-item" class="headerlink" title="Flex item"></a>Flex item</h2><p>文档流中 flex container 的每个子元素成为一个 flex item, 不带标签的文字包含在一个匿名 flex item 中.<br>因为脱离文档流, flex container 的绝对定位的子元素不参与 flex 布局.</p>
+<p>Flex items 元素本身也是 flex-level boxes, 而不是 block-level boxes: 它们参与在它们的 container’s flex formatting context, 而不在 block formatting context.</p>
+<p>flex items 的 margins 和 paddings 的百分比计算:</p>
+<ul>
+<li>their own axis (left/right percentages resolve against width, top/bottom resolve against height), or,</li>
+<li>the inline axis (left/right/top/bottom percentages all resolve against width)</li>
+</ul>
+<p>避免使用百分比在 flex item 的 margin 和 padding 上, 因为它们在不同的浏览器上表现不一致.</p>
+<p><strong>属性</strong></p>
+<ol>
+<li><p><code>order: -1</code><br>放在其他子元素的前面</p>
+</li>
+<li><p><code>flex: &lt;positive-number&gt;</code><br> flex: <positive-number> 1 0<br> flex-grow, flex-shrink, flex-basis 三个属性的缩写<br> 默认值: 0 1 auto<br> 该属性是控制 flex items 的 width 的关键</positive-number></p>
+<p> <code>flex: auto</code>: 1 1 auto<br> <code>flex: none</code>: 0 0 auto</p>
+</li>
+<li><p><code>flex-grow</code><br>how much the flex item will grow relative to the rest of the flex items in the flex container when positive free space is distributed</p>
+</li>
+<li><p><code>flex-shrink</code><br>how much the flex item will shrink relative to the rest of the flex items in the flex container when negative free space is distributed</p>
+</li>
+<li><p><code>flex-basis</code><br>the initial main size of the flex item, before free space is distributed according to the flex factors</p>
+</li>
+<li><p><code>align-self</code><br>该属性允许每个 flex item 覆盖 align-items 属性.<br>If either of the flex item’s cross-axis margins are auto, align-self has no effect.</p>
+</li>
+</ol>
+<p>Specifying <code>visibility:collapse</code> on a flex item causes it to become a collapsed flex item</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>Flex containers 不是 block-level 元素, 因此一些属性不适用 flex containers 或 items.</p>
+<p><strong>flex container</strong></p>
+<ul>
+<li>floats 不会影响 flex container, flex container 的 margins 不会和它子元素的 margin collapse. <code>overflow</code> 属性适用于 flex container.</li>
+<li>the <code>::first-line</code> and <code>::first-letter</code> 不适用于 flex container.</li>
+<li>the <code>column-*</code> 不适用 flex container.</li>
+</ul>
+<p><strong>flex item</strong></p>
+<ul>
+<li><code>float</code> 和 <code>clear</code> 对 flex item 无效.</li>
+<li><code>vertical-align</code> 对 flex item 无效.</li>
+<li>相邻 flex items 的 margin 不会 collapse.</li>
+</ul>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><p><a href="https://www.w3.org/TR/css-flexbox-1/" target="_blank" rel="external">w3-flex</a><br><a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/" target="_blank" rel="external">css-tricks</a><br><a href="https://philipwalton.github.io/solved-by-flexbox/" target="_blank" rel="external">solved-by-flexbox</a><br><a href="http://codepen.io/enxaneta/details/adLPwv" target="_blank" rel="external">flex-playground</a></p>
+
+      
     </div>
     <footer class="article-footer">
-      <a data-url="<%- post.permalink %>" data-id="<%= post._id %>" class="article-share-link"><%= __('share') %></a>
-      <% if (post.comments && config.disqus_shortname){ %>
-        <a href="<%- post.permalink %>#disqus_thread" class="article-comment-link"><%= __('comment') %></a>
-      <% } %>
-      <%- partial('post/tag') %>
+      <a data-url="http://www.rainyleo.com/2016/10/26/flex-layout/" data-id="cj02f4h8a000u41seppql6rnq" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li></ul>
+
     </footer>
   </div>
-  <% if (!index){ %>
-    <%- partial('post/nav') %>
-  <% } %>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/10/28/Redux源码解读(1)-createStore/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Redux源码解读(1)-createStore
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/10/14/React-component-pattern/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">React中的组件分类</div>
+    </a>
+  
+</nav>
+
+  
 </article>
 
-<% if (!index && post.comments && config.disqus_shortname){ %>
-<section id="comments">
-  <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
-</section>
-<% } %></section>
+
+
+ <section id="comments">
+   <!-- 多说评论框 start -->
+   <div class="ds-thread" data-thread-key="post-flex-layout" data-title="flex layout" data-url="http://www.rainyleo.com/2016/10/26/flex-layout/"></div>
+   <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+   <script type="text/javascript">
+   var duoshuoQuery = {short_name:'rainyleo'};
+     (function() {
+       var ds = document.createElement('script');
+       ds.type = 'text/javascript';ds.async = true;
+       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+       ds.charset = 'UTF-8';
+       (document.getElementsByTagName('head')[0] 
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+     })();
+     </script>
+   <!-- 多说公共JS代码 end -->
+ </section>
+ </section>
         
           <aside id="sidebar">
   
@@ -131,7 +245,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archieven</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li></ul>
     </div>
@@ -141,7 +255,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recente berichten</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
