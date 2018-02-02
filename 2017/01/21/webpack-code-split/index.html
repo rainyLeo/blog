@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>webpack 中使用 code splitting | rainyleo blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="代码分割(Code splitting)是 webpack 最强大的特性之一. 它让你可以把代码分割到不同的 bundle 中之后你可以按需加载-例如当用户导航到一个匹配的路由, 或触发一个事件. 这会产生更小的 bundle, 还可以控制资源加载的优先级. 如果正确使用的话, 会对应用的加载时间产生很好的优化
+webpack 中主要有2中类型的 code splitting
+资源 splitti">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack 中使用 code splitting">
+<meta property="og:url" content="http://www.rainyleo.com/2017/01/21/webpack-code-split/index.html">
+<meta property="og:site_name" content="rainyleo blog">
+<meta property="og:description" content="代码分割(Code splitting)是 webpack 最强大的特性之一. 它让你可以把代码分割到不同的 bundle 中之后你可以按需加载-例如当用户导航到一个匹配的路由, 或触发一个事件. 这会产生更小的 bundle, 还可以控制资源加载的优先级. 如果正确使用的话, 会对应用的加载时间产生很好的优化
+webpack 中主要有2中类型的 code splitting
+资源 splitti">
+<meta property="og:updated_time" content="2017-03-21T06:29:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="webpack 中使用 code splitting">
+<meta name="twitter:description" content="代码分割(Code splitting)是 webpack 最强大的特性之一. 它让你可以把代码分割到不同的 bundle 中之后你可以按需加载-例如当用户导航到一个匹配的路由, 或触发一个事件. 这会产生更小的 bundle, 还可以控制资源加载的优先级. 如果正确使用的话, 会对应用的加载时间产生很好的优化
+webpack 中主要有2中类型的 code splitting
+资源 splitti">
+  
+    <link rel="alternate" href="/atom.xml" title="rainyleo blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <!-- <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css"> -->
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rainyleo blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.rainyleo.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-webpack-code-split" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/21/webpack-code-split/" class="article-date">
+  <time datetime="2017-01-21T03:35:50.000Z" itemprop="datePublished">2017-01-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      webpack 中使用 code splitting
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>代码分割(Code splitting)是 webpack 最强大的特性之一. 它让你可以把代码分割到不同的 bundle 中之后你可以按需加载-例如当用户导航到一个匹配的路由, 或触发一个事件. 这会产生更小的 bundle, 还可以控制资源加载的优先级. 如果正确使用的话, 会对应用的加载时间产生很好的优化</p>
+<p>webpack 中主要有2中类型的 code splitting</p>
+<h2 id="资源-splitting-用于缓存和并行加载"><a href="#资源-splitting-用于缓存和并行加载" class="headerlink" title="资源 splitting 用于缓存和并行加载"></a>资源 splitting 用于缓存和并行加载</h2><h3 id="第三方库-code-splitting"><a href="#第三方库-code-splitting" class="headerlink" title="第三方库 code splitting"></a>第三方库 code splitting</h3><p>应用中经常会依赖许多第三方库, 和应用代码不同,这些第三方库的代码很少有改动</p>
+<p>如果把这些库中的代码打包的单独的 bundle 中, 可以利用浏览器的缓存机制更长时间的缓存这些文件.</p>
+<p>要想这样做, 文件名中的 <code>[hash]</code> 部分不论应用代码如何变化都需要保存不变. 需要和<code>CommonsChunkPlugin</code> 插件一起使用.</p>
+<h3 id="CSS-splitting"><a href="#CSS-splitting" class="headerlink" title="CSS splitting"></a>CSS splitting</h3><p>也可以把样式分离到单独的 bundle 中, 独立于应用逻辑. 这样有利于样式文件的缓存, 而且可以让浏览器并行加载应用代码和样式文件, 避免出现 FOUC(flash of unstyled content, 无样式内容闪现)</p>
+<p>需要配合<code>extract-text-webpack-plugin</code> 一起使用.<br><a id="more"></a></p>
+<h2 id="按需-code-splitting"><a href="#按需-code-splitting" class="headerlink" title="按需 code-splitting"></a>按需 code-splitting</h2><h3 id="require-ensure"><a href="#require-ensure" class="headerlink" title="require.ensure"></a>require.ensure</h3><p>webpack 进行代码分割的一种方式是使用 <code>requre.ensure()</code></p>
+<p>(注意: <code>require.ensure</code> 只适用于 webpack, <code>import()</code> 是 ECMAScript 的一个提案)</p>
+<p>webpack 在 building 的时候静态解析 <code>require.ensure()</code>. 作为依赖被引用的模块或者在回调函数中被 require() 的, 会被添加到 一个新的 chunk. 这个新的 chunk 被写入一个异步的 bundle, webpack 通过 jsonp 对它进行按需加载.</p>
+<p>语法如下:<br><code>require.ensure(dependencies: Stirng[], callback: funcion(require), chunkName: String)</code></p>
+<p><strong>dependencies</strong></p>
+<p>由字符串组成的数组, 在 callback 执行前, 这些模块会变得可用.</p>
+<p><strong>callback</strong></p>
+<p>当 dependencies 加载完成时, webpack 会执行的回调函数. <code>require</code> 会作为参数. 函数中可以用 <code>require()</code>继续引入它需要的其他模块</p>
+<p><strong>chunkName</strong></p>
+<p><code>chunkName</code> 是由这个<code>require.ensure()</code> 创造的 chunkd 的名称. 把同样的<code>chunkName</code> 传给几个不同的 <code>require.ensure()</code>, 可以把它们组合到一个 chunk 中, 这样只会产生一个浏览器需要加载的 bundle</p>
+<h4 id="require-ensure-的注意点"><a href="#require-ensure-的注意点" class="headerlink" title="require.ensure() 的注意点"></a>require.ensure() 的注意点</h4><p><strong>空数组作为参数</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">require</span>.ensure([], <span class="function"><span class="keyword">function</span>(<span class="params">require</span>) </span>&#123;</div><div class="line">  <span class="built_in">require</span>(<span class="string">'./a.js'</span>)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>上面的代码会创建一个 split point, <code>a.js</code> 会被 webpack 独立打包</p>
+<p><strong>dependencies 作为参数</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">require</span>.ensure([<span class="string">'./b.js'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">require</span>) </span>&#123;</div><div class="line">  <span class="built_in">require</span>(<span class="string">'./c.js'</span>)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>在上面的代码中, <code>b.js</code> 和 <code>c.js</code>会被打包到一起, 并从 main budle 中 split 出去. 但是只要<code>c.js</code> 会被执行. <code>b.js</code> 只是作为依赖而不会执行.</p>
+<h3 id="import"><a href="#import" class="headerlink" title="import()"></a>import()</h3><h4 id="动态-import"><a href="#动态-import" class="headerlink" title="动态 import"></a>动态 import</h4><p>webpack(2.0) 把<code>import()</code>作为一个 split-point, 把其中的模块放入单独的 chunk 中. <code>import()</code> 内模块名作为参数, 并返回一个<code>Promise: import(name) -&gt; Promise</code><br>注意:<br><code>import()</code>路径不能完全是动态. 可以是完全静态, 例如<code>import(&#39;./c.json&#39;)</code> 或部分静态, 例如 <code>import(&#39;./locale/&#39; + &#39;d.json&#39;)</code></p>
+<h4 id="import-对比-require-ensure"><a href="#import-对比-require-ensure" class="headerlink" title="import 对比 require.ensure"></a>import 对比 require.ensure</h4><p>优点: 加载 chunk 失败时可以进行错误处理了因为是<code>Promise</code> 的<br>缺点: <code>require.ensure</code> 可以通过可选的第三个参数进行命名, 但<code>import</code> API暂时还不支持. 而且<code>require.ensure</code> 可以通过给几个 chunk 取同样的名称把它们打包到同一个 bundle 中</p>
+<h2 id="配合-Vue-router-懒加载"><a href="#配合-Vue-router-懒加载" class="headerlink" title="配合 Vue-router 懒加载"></a>配合 Vue-router 懒加载</h2><p>当把应用代码打包到一个 bunlde 中时, 文件可能过大影响页面加载时间. 一个有效的方法是把每个路由的组件分割到单独的 chunk 中, 当路由被访问时再加载它们</p>
+<p>配合 Vue 的异步组件特性和 Webpack 的 code splitting, 很容易实现路由组件的懒加载.</p>
+<p>示例如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> Foo = <span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</div><div class="line">  <span class="built_in">require</span>.ensure([], () =&gt; &#123;</div><div class="line">    resolve(<span class="built_in">require</span>(<span class="string">'./Foo.vue'</span>))</div><div class="line">  &#125;)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 也可以用 AMD 风格的写法</span></div><div class="line"><span class="keyword">const</span> Foo = <span class="function"><span class="params">resolve</span> =&gt;</span> <span class="built_in">require</span>([<span class="string">'./Foo.vue'</span>], resolve)</div><div class="line"></div><div class="line"><span class="comment">// 或 import()写法( Webpack 2)</span></div><div class="line"><span class="keyword">const</span> Foo = <span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'./Foo.vue'</span>)</div></pre></td></tr></table></figure>
+<p>路由中如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> router = <span class="keyword">new</span> VueRouter(&#123;</div><div class="line">  <span class="attr">routes</span>: [</div><div class="line">    &#123; <span class="attr">path</span>: <span class="string">'/foo'</span>, <span class="attr">component</span>: Foo &#125;</div><div class="line">  ]</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p><strong>把几个组件组合成一个 chunk</strong></p>
+<p>有时候会需要把同一个路由下嵌套的组件组合在同一个异步 chunk 中. 如上文所说, 给 <code>require.ensure</code> 传入同样的第三个参数作为 chunk 名称.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> Foo = <span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</div><div class="line">  <span class="built_in">require</span>.ensure([], () =&gt; &#123;</div><div class="line">    resolve(<span class="built_in">require</span>(<span class="string">'./Foo.vue'</span>)), <span class="string">'group'</span>)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">const</span> Bar = <span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</div><div class="line">  <span class="built_in">require</span>.ensure([], () =&gt; &#123;</div><div class="line">    resolve(<span class="built_in">require</span>(<span class="string">'./Bar.vue'</span>)), <span class="string">'group'</span>)</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>参考链接<br><a href="http://router.vuejs.org/en/advanced/lazy-loading.html" target="_blank" rel="external">vue-router-lazyloading</a><br><a href="https://webpack.js.org/guides/code-splitting/" target="_blank" rel="external">webpack-code-slitting</a><br><a href="https://vuejs.org/v2/guide/components.html#Async-Components" target="_blank" rel="external">vue-async-components</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.rainyleo.com/2017/01/21/webpack-code-split/" data-id="cjd689dj7000y471n225sw7ll" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/12/26/Vue-源码解读-模板编译/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Vue 源码解读-模板编译</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+ <section id="comments">
+   <!-- 多说评论框 start -->
+   <div class="ds-thread" data-thread-key="post-webpack-code-split" data-title="webpack 中使用 code splitting" data-url="http://www.rainyleo.com/2017/01/21/webpack-code-split/"></div>
+   <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+   <script type="text/javascript">
+   var duoshuoQuery = {short_name:'rainyleo'};
+     (function() {
+       var ds = document.createElement('script');
+       ds.type = 'text/javascript';ds.async = true;
+       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+       ds.charset = 'UTF-8';
+       (document.getElementsByTagName('head')[0] 
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+     })();
+     </script>
+   <!-- 多说公共JS代码 end -->
+ </section>
+ </section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CSS/" style="font-size: 13.33px;">CSS</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/React/" style="font-size: 16.67px;">React</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/atom/" style="font-size: 10px;">atom</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/01/21/webpack-code-split/">webpack 中使用 code splitting</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/26/Vue-源码解读-模板编译/">Vue 源码解读-模板编译</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/15/Vue-源码解读1-响应式系统/">Vue 源码解读-响应式系统</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/01/Redux源码解读(5)-applyMiddleware/">Redux源码解读(5)-applyMiddleware</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/30/Redux源码解读(4)-compose/">Redux源码解读(4)-compose</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 rainyLeo<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+<div id="totop" style="position:fixed;bottom:120px;right:50px;cursor: pointer;">
+	<a title="返回顶部"><img src="/images/scrollup.png" /></a>
+</div>
+<script src="/js/totop.js"></script>
+<!-- to top -->
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

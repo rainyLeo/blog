@@ -63,6 +63,97 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-CSS百分比" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/10/12/CSS百分比/" class="article-date">
+  <time datetime="2016-10-12T15:36:23.000Z" itemprop="datePublished">2016-10-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/12/CSS百分比/">CSS 百分比</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>CSS 中很多属性都可以有百分比值, 不同的属性对应的百分比意义也不一样.<br>百分比是一种相对值, 在分析 CSS 属性的百分比含义时, 需要找到对应的参照物.</p>
+<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><p>下面分析可以用百分比表示的 CSS 属性以及对应的参照物.</p>
+<p><code>width</code>: 相对于包含块(containing block)的 width. 对于绝对定位的元素, 它的包含块基于 block-level 元素, 百分比相对于那个元素的 padding box 的 width.<br><code>height</code>: 相对于包含块的 height. 如果包含块没有指定的 height(例如取决于内容的 height),  并且这个元素没有绝对定位, 则值变为 ‘auto’. 根元素的 height 百分比相对于初始包含块(initial containing block). 注意: 对于绝对定位的元素, 它的包含块基于 block-level 元素, 百分比相对于那个元素的 padding box 的 height.<br><code>margin</code>: 相对于包含块的 width<br><code>padding</code>: 相对于包含块的 width<br><code>top, bottom</code>: 相对于包含块的 height<br><code>left, right</code>: 相对于包含块的 width<br><code>background-position</code>: 把图片的百分比位置定位到元素的 padding-box 百分比位置<br><code>font-size</code>: 相对于父元素的 font-size<br><code>line-height</code>: 相对于元素的 font-size<br><code>vertical-align</code>: 相对于元素的 line-height<br><code>border-radius</code>:<br><code>transform</code>: refer to the size of bounding box</p>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>当百分比值用于可继承属性时，只有结合参照值计算后的绝对值会被继承，而不是百分比值本身</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.rainyleo.com/2016/10/12/CSS百分比/" data-id="cjd689dhw0002471nskm9cp81" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Javascript-promise" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/09/20/Javascript-promise/" class="article-date">
+  <time datetime="2016-09-20T12:22:42.000Z" itemprop="datePublished">2016-09-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/20/Javascript-promise/">JavaScript 异步(2)-Promise</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>promise 是一个保存异步操作结果的容器(placeholder). 异步操作除了给函数传递回调, 或订阅事件, 也可以让它返回一个 promise</p>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>新建一个 Promise 对象可以用下面的语法,<br><code>new Promise( /* executor */ function(resolve, reject) { ... } );</code> </p>
+<p><strong>参数: executor</strong></p>
+<p>Promise 接收一个函数作为参数, 这个函数叫做 executor. 当新建 Promise 时 executor 会立即执行, 它接收2个函数<code>resolve</code>和<code>reject</code>作为参数,当它们被调用时会分别<code>resolve</code>,  <code>reject</code>这个 Promise , executor 通常会初始化一些异步操作, 当这些操作完成时调用 resolve 或 reject 来 resolve 这个 promise 或者出错时 reject 它 </p>
+<p>调用 <code>resolve()</code> 会触发异步操作, 传递给<code>then()</code>和<code>catch()</code>的函数会被异步执行, 因为它们被添加在了<code>job queue</code>.<br>每一次调用<code>then()</code>或<code>catch()</code>实际上会创建并返回另一个 promise. 当第一个 promise 已经 fulfilled 或者 rejected 之后, 这第二个才会 resolve</p>
+        
+          <p class="article-more-link">
+            <a href="/2016/09/20/Javascript-promise/#more">阅读更多</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.rainyleo.com/2016/09/20/Javascript-promise/" data-id="cjd689dik000d471n8jva8ryg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-JavaScript_Event_Loop" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/09/16/JavaScript_Event_Loop/" class="article-date">
@@ -101,7 +192,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/09/16/JavaScript_Event_Loop/" data-id="cj02f4h7l000a41se3ec8p1tc" class="article-share-link">Share</a>
+      <a data-url="http://www.rainyleo.com/2016/09/16/JavaScript_Event_Loop/" data-id="cjd689di80007471nujkydd4e" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -145,7 +236,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/08/20/JavaScript_Object_Methods/" data-id="cj02f4h7j000841seequefayi" class="article-share-link">Share</a>
+      <a data-url="http://www.rainyleo.com/2016/08/20/JavaScript_Object_Methods/" data-id="cjd689did0009471nk14kc6p7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -210,7 +301,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/08/15/Array-methods/" data-id="cj02f4h77000341sepcpr9rfz" class="article-share-link">Share</a>
+      <a data-url="http://www.rainyleo.com/2016/08/15/Array-methods/" data-id="cjd689di20004471nxuupjq41" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -255,10 +346,116 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/08/13/快捷键/" data-id="cj02f4h8c000x41seajjd2k4c" class="article-share-link">Share</a>
+      <a data-url="http://www.rainyleo.com/2016/08/13/快捷键/" data-id="cjd689dj90010471n20pggm0f" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/atom/">atom</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-css-居中" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/02/03/css-居中/" class="article-date">
+  <time datetime="2015-02-03T11:31:39.000Z" itemprop="datePublished">2015-02-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/02/03/css-居中/">css 居中</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="居中"><a href="#居中" class="headerlink" title="居中"></a>居中</h2><p><strong>水平居中</strong></p>
+<ol>
+<li><p>inline-* 元素</p>
+<ul>
+<li>父 block 元素设置 <code>text-align: center</code></li>
+</ul>
+</li>
+<li><p>1个block 元素</p>
+<ul>
+<li>设置 width(不设置的话等于父元素的 width), 水平 margin 设为 auto</li>
+</ul>
+</li>
+<li><p>多个 block元素 </p>
+<ul>
+<li>设置 <code>display: inline-block</code>; </li>
+<li>用 flex, 父元素 <code>{ display: flex; justify-content: center;}</code></li>
+</ul>
+</li>
+</ol>
+<p><strong>垂直居中</strong></p>
+<ol>
+<li><p>inline-* 元素:</p>
+<ul>
+<li>单行 </li>
+</ul>
+<ol>
+<li>上下 padding 相同</li>
+<li>line-height 等于 height</li>
+</ol>
+<ul>
+<li>多行 </li>
+</ul>
+<ol>
+<li>上下 padding 相同 </li>
+<li><code>{ display: table-cell; vertical-align: middle;}</code>, 父 block 元素 <code>display: table</code></li>
+<li>用 flex,  父 block 元素 <code>{display: flex; flex-direction: column; justify-content: center; resize: vertical; overflow: auto}</code> </li>
+<li>用伪元素, <code>div{position: relative;} div:before{ content: &#39; &#39;; display: inline-block; height: 100%: width: 1%; vertical-align: middle;} p {display: inline-block; vertical-align: middle}</code></li>
+</ol>
+</li>
+<li><p>block 元素</p>
+<ul>
+<li>知道元素高度: </li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.parent</span> &#123; <span class="attribute">postion</span>: relative; &#125;, </div><div class="line"><span class="selector-class">.children</span> &#123; <span class="attribute">postion</span>: absolute; <span class="attribute">top</span>: <span class="number">50%</span>; <span class="attribute">height</span>: <span class="number">100px</span>; <span class="attribute">margin-top</span>: -<span class="number">50px</span> &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>不知道元素高度: </li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.parent</span> &#123; <span class="attribute">postion</span>: relative &#125;, </div><div class="line"><span class="selector-class">.children</span> &#123; <span class="attribute">position</span>: absolute; <span class="attribute">top</span>: <span class="number">50%</span>; <span class="attribute">transform</span>: <span class="built_in">translateY</span>(-50%); &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>使用 flex</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.parent</span> &#123; <span class="attribute">display</span>: flex; <span class="attribute">flex-direction</span>: column; <span class="attribute">justify-content</span>: center; &#125;</div></pre></td></tr></table></figure>
+<p><strong>水平垂直居中</strong></p>
+<ol>
+<li>元素有固定的宽度和高度 </li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.parent</span> &#123; <span class="attribute">position</span>: relative &#125;, </div><div class="line"><span class="selector-class">.child</span> &#123; </div><div class="line">    <span class="attribute">width</span>: <span class="number">300px</span>; </div><div class="line">    <span class="attribute">height</span>: <span class="number">100px</span>; </div><div class="line">    <span class="attribute">padding</span>: <span class="number">20px</span>; </div><div class="line">    <span class="attribute">position</span>: absolute; </div><div class="line">    <span class="attribute">top</span>: <span class="number">50%</span>; </div><div class="line">    <span class="attribute">left</span>: <span class="number">50%</span>; </div><div class="line">    <span class="attribute">margin</span>: -<span class="number">70px</span> <span class="number">0</span> <span class="number">0</span> -<span class="number">170px</span>; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>不知道元素的宽度和高度: </li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.parent</span> &#123; <span class="attribute">position</span>: relative; &#125; </div><div class="line"><span class="selector-class">.child</span> &#123; <span class="attribute">position</span>: absolute; <span class="attribute">top</span>: <span class="number">50%</span>; <span class="attribute">left</span>: <span class="number">50%</span>; <span class="attribute">transform</span>: <span class="built_in">translate</span>(-50%, -50%)&#125;;</div></pre></td></tr></table></figure>
+<ol>
+<li>使用 flex</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.parent</span> &#123; </div><div class="line">    <span class="attribute">display</span>: flex; </div><div class="line">    <span class="attribute">justify-content</span>: center; <span class="attribute">align-items</span>: center; </div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 或 .child &#123; margin: auto; &#125; */</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.rainyleo.com/2015/02/03/css-居中/" data-id="cjd68hubv00006n1n8ueid8rc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li></ul>
 
     </footer>
   </div>
@@ -284,7 +481,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CSS/" style="font-size: 13.33px;">CSS</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/React/" style="font-size: 16.67px;">React</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/atom/" style="font-size: 10px;">atom</a>
+      <a href="/tags/CSS/" style="font-size: 13.33px;">CSS</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/React/" style="font-size: 16.67px;">React</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/atom/" style="font-size: 10px;">atom</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a>
     </div>
   </div>
 
@@ -293,7 +490,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -306,6 +503,14 @@
       <ul>
         
           <li>
+            <a href="/2017/01/21/webpack-code-split/">webpack 中使用 code splitting</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/26/Vue-源码解读-模板编译/">Vue 源码解读-模板编译</a>
+          </li>
+        
+          <li>
             <a href="/2016/12/15/Vue-源码解读1-响应式系统/">Vue 源码解读-响应式系统</a>
           </li>
         
@@ -315,14 +520,6 @@
         
           <li>
             <a href="/2016/10/30/Redux源码解读(4)-compose/">Redux源码解读(4)-compose</a>
-          </li>
-        
-          <li>
-            <a href="/2016/10/29/Redux源码解读(3)-bindActionCreators/">Redux源码解读(3)-bindActionCreators</a>
-          </li>
-        
-          <li>
-            <a href="/2016/10/29/Redux源码解读(2)-combineReducers/">Redux源码解读(2)-combineReducers</a>
           </li>
         
       </ul>
@@ -337,7 +534,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2017 rainyLeo<br>
+      &copy; 2018 rainyLeo<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

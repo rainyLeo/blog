@@ -3,24 +3,36 @@
 <head>
   <meta charset="utf-8">
   
-  <title>CSS 百分比 | rainyleo blog</title>
+  <title>Vue 源码解读-模板编译 | rainyleo blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="CSS 中很多属性都可以有百分比值, 不同的属性对应的百分比意义也不一样.百分比是一种相对值, 在分析 CSS 属性的百分比含义时, 需要找到对应的参照物.
-属性下面分析可以用百分比表示的 CSS 属性以及对应的参照物.
-width: 相对于包含块(containing block)的 width. 对于绝对定位的元素, 它的包含块基于 block-level 元素, 百分比相对于那个元素的 pa">
+  <meta name="description" content="看一下代码目录:
+
+src: 源码目录. 代码用 ES2015 编写, 使用 Flow 做类型注释.
+
+entries: 不同 builds 和 packages 的入口.
+
+web-runtime.js: dist/vue.common.js 的入口, 也就是 runtime-only build. 不包含 template to render function compiler, 因此不支持">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CSS 百分比">
-<meta property="og:url" content="http://www.rainyleo.com/2016/10/12/CSS百分比/index.html">
+<meta property="og:title" content="Vue 源码解读-模板编译">
+<meta property="og:url" content="http://www.rainyleo.com/2016/12/26/Vue-源码解读-模板编译/index.html">
 <meta property="og:site_name" content="rainyleo blog">
-<meta property="og:description" content="CSS 中很多属性都可以有百分比值, 不同的属性对应的百分比意义也不一样.百分比是一种相对值, 在分析 CSS 属性的百分比含义时, 需要找到对应的参照物.
-属性下面分析可以用百分比表示的 CSS 属性以及对应的参照物.
-width: 相对于包含块(containing block)的 width. 对于绝对定位的元素, 它的包含块基于 block-level 元素, 百分比相对于那个元素的 pa">
-<meta property="og:updated_time" content="2016-12-29T17:04:51.000Z">
+<meta property="og:description" content="看一下代码目录:
+
+src: 源码目录. 代码用 ES2015 编写, 使用 Flow 做类型注释.
+
+entries: 不同 builds 和 packages 的入口.
+
+web-runtime.js: dist/vue.common.js 的入口, 也就是 runtime-only build. 不包含 template to render function compiler, 因此不支持">
+<meta property="og:updated_time" content="2017-03-13T13:05:58.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CSS 百分比">
-<meta name="twitter:description" content="CSS 中很多属性都可以有百分比值, 不同的属性对应的百分比意义也不一样.百分比是一种相对值, 在分析 CSS 属性的百分比含义时, 需要找到对应的参照物.
-属性下面分析可以用百分比表示的 CSS 属性以及对应的参照物.
-width: 相对于包含块(containing block)的 width. 对于绝对定位的元素, 它的包含块基于 block-level 元素, 百分比相对于那个元素的 pa">
+<meta name="twitter:title" content="Vue 源码解读-模板编译">
+<meta name="twitter:description" content="看一下代码目录:
+
+src: 源码目录. 代码用 ES2015 编写, 使用 Flow 做类型注释.
+
+entries: 不同 builds 和 packages 的入口.
+
+web-runtime.js: dist/vue.common.js 的入口, 也就是 runtime-only build. 不包含 template to render function compiler, 因此不支持">
   
     <link rel="alternate" href="/atom.xml" title="rainyleo blog" type="application/atom+xml">
   
@@ -71,10 +83,10 @@ width: 相对于包含块(containing block)的 width. 对于绝对定位的元�
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-CSS百分比" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Vue-源码解读-模板编译" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/10/12/CSS百分比/" class="article-date">
-  <time datetime="2016-10-12T15:36:23.000Z" itemprop="datePublished">2016-10-12</time>
+    <a href="/2016/12/26/Vue-源码解读-模板编译/" class="article-date">
+  <time datetime="2016-12-26T07:44:10.000Z" itemprop="datePublished">2016-12-26</time>
 </a>
     
   </div>
@@ -85,7 +97,7 @@ width: 相对于包含块(containing block)的 width. 对于绝对定位的元�
         
   
     <h1 class="article-title" itemprop="name">
-      CSS 百分比
+      Vue 源码解读-模板编译
     </h1>
   
 
@@ -93,38 +105,78 @@ width: 相对于包含块(containing block)的 width. 对于绝对定位的元�
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>CSS 中很多属性都可以有百分比值, 不同的属性对应的百分比意义也不一样.<br>百分比是一种相对值, 在分析 CSS 属性的百分比含义时, 需要找到对应的参照物.</p>
-<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><p>下面分析可以用百分比表示的 CSS 属性以及对应的参照物.</p>
-<p><code>width</code>: 相对于包含块(containing block)的 width. 对于绝对定位的元素, 它的包含块基于 block-level 元素, 百分比相对于那个元素的 padding box 的 width.<br><code>height</code>: 相对于包含块的 height. 如果包含块没有指定的 height(例如取决于内容的 height),  并且这个元素没有绝对定位, 则值变为 ‘auto’. 根元素的 height 百分比相对于初始包含块(initial containing block). 注意: 对于绝对定位的元素, 它的包含块基于 block-level 元素, 百分比相对于那个元素的 padding box 的 height.<br><code>margin</code>: 相对于包含块的 width<br><code>padding</code>: 相对于包含块的 width<br><code>top, bottom</code>: 相对于包含块的 height<br><code>left, right</code>: 相对于包含块的 width<br><code>background-position</code>: 把图片的百分比位置定位到元素的 padding-box 百分比位置<br><code>font-size</code>: 相对于父元素的 font-size<br><code>line-height</code>: 相对于元素的 font-size<br><code>vertical-align</code>: 相对于元素的 line-height<br><code>border-radius</code>:<br><code>transform</code>: refer to the size of bounding box</p>
-<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>当百分比值用于可继承属性时，只有结合参照值计算后的绝对值会被继承，而不是百分比值本身</p>
+        <p>看一下代码目录:</p>
+<ul>
+<li><p><strong><code>src</code></strong>: 源码目录. 代码用 ES2015 编写, 使用 <a href="https://flowtype.org/" target="_blank" rel="external">Flow</a> 做类型注释.</p>
+<ul>
+<li><p><strong><code>entries</code></strong>: 不同 builds 和 packages 的入口.</p>
+<ul>
+<li><p><strong><code>web-runtime.js</code></strong>: <code>dist/vue.common.js</code> 的入口, 也就是 runtime-only build. 不包含 template to render function compiler, 因此不支持 <code>template</code> 选项. <strong>它在 <code>package.json</code> 被设为 <code>main</code> field, 当你从 NPM package 中 import Vue 时, 它是默认的输出.</strong></p>
+</li>
+<li><p><strong><code>web-runtime-with-compiler.js</code></strong>: <code>dist/vue.js</code> 的入口, 也就是 standalone build. 它包含了 template to render function compiler. 如果想要从 NPM packages 中使用的话, 要 <code>import Vue from &#39;vue/dist/vue&#39;</code>, 或者 在构建工具的配置中 alias <code>vue</code> to <code>vue/dist/vue</code> .</p>
+</li>
+<li><p><strong><code>web-compiler.js</code></strong>: <code>vue-template-compiler</code> NPM package 的入口.</p>
+</li>
+<li><p><strong><code>web-server-renderer.js</code></strong>: <code>vue-server-renderer</code> NPM package 的入口.</p>
+</li>
+</ul>
+</li>
+<li><p><strong><code>compiler</code></strong>: 包含 template-to-render-function compiler 的代码.</p>
+<p>compiler 包含 parser (把 template strings 转为 element ASTs), optimizer (检查 static trees for vdom render 优化), code generator (从 element ASTs 生成 render function code ). 注意到 codegen 直接从 element AST 生成 code strings - 这样为了减小代码体积,  因为在 standalone build 里 compiler 会加载到浏览器.</p>
+</li>
+<li><p><strong><code>core</code></strong>: 包含通用的, 与平台无关的 runtime code.</p>
+<p><code>core</code> 里的代码可以再任意的 JavaScript 环境中运行, 例如 browser, Node.js, 或 an embedded JavaScript runtime in native applications.</p>
+<ul>
+<li><p><strong><code>observer</code></strong>: 包含和响应式系统相关的代码.</p>
+</li>
+<li><p><strong><code>vdom</code></strong>: 包含 vdom element creation and patching 的代码.</p>
+</li>
+<li><p><strong><code>instance</code></strong>: 包含 Vue 实例构造函数和原型方法.</p>
+</li>
+<li><p><strong><code>global-api</code></strong>: 如名称所示.</p>
+</li>
+<li><p><strong><code>components</code></strong>: 通用的抽象组件. 目前 <code>keep-alive</code> 是唯一的一个.</p>
+</li>
+</ul>
+</li>
+<li><p><strong><code>server</code></strong>: 包含 server-side 渲染相关的代码.</p>
+</li>
+<li><p><strong><code>platforms</code></strong>: 包含平台相关的代码.</p>
+<p>每个平台模块包含三个部分: <code>compiler</code>, <code>runtime</code> and <code>server</code>, 和上面的三个目录相一致. 每一部分包含平台相关的 模块/工具, 会被导入到平台相关的入口文件中. 例如, 实现 <code>v-bind:class</code> 逻辑的代码位于 <code>platforms/web/runtime/modules/class.js</code> - 会在 <code>entries/web-runtime.js</code> 中导入, 它用来创建浏览器相关的 vdom patching function.</p>
+</li>
+<li><p><strong><code>sfc</code></strong>: 包含单文件组件 (<code>*.vue</code> files) parsing logic. 这用在 <code>vue-template-compiler</code> package.</p>
+</li>
+<li><p><strong><code>shared</code></strong>: 整个代码中公用的工具函数.</p>
+</li>
+</ul>
+</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/10/12/CSS百分比/" data-id="cjd689dhw0002471nskm9cp81" class="article-share-link">Share</a>
+      <a data-url="http://www.rainyleo.com/2016/12/26/Vue-源码解读-模板编译/" data-id="cjd689diz000p471ndcly8jwg" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li></ul>
-
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2016/10/14/React-component-pattern/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/01/21/webpack-code-split/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          React中的组件分类
+          webpack 中使用 code splitting
         
       </div>
     </a>
   
   
-    <a href="/2016/09/20/Javascript-promise/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/12/15/Vue-源码解读1-响应式系统/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">JavaScript 异步(2)-Promise</div>
+      <div class="article-nav-title">Vue 源码解读-响应式系统</div>
     </a>
   
 </nav>
@@ -136,7 +188,7 @@ width: 相对于包含块(containing block)的 width. 对于绝对定位的元�
 
  <section id="comments">
    <!-- 多说评论框 start -->
-   <div class="ds-thread" data-thread-key="post-CSS百分比" data-title="CSS 百分比" data-url="http://www.rainyleo.com/2016/10/12/CSS百分比/"></div>
+   <div class="ds-thread" data-thread-key="post-Vue-源码解读-模板编译" data-title="Vue 源码解读-模板编译" data-url="http://www.rainyleo.com/2016/12/26/Vue-源码解读-模板编译/"></div>
    <!-- 多说评论框 end -->
    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
    <script type="text/javascript">
