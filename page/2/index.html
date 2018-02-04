@@ -93,7 +93,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/10/12/CSS百分比/" data-id="cjd689dhw0002471nskm9cp81" class="article-share-link">Share</a>
+      <a data-url="http://www.rainyleo.com/2016/10/12/CSS百分比/" data-id="cjd8gh7k300031o1nlqfk8jmh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li></ul>
@@ -141,7 +141,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/09/20/Javascript-promise/" data-id="cjd689dik000d471n8jva8ryg" class="article-share-link">Share</a>
+      <a data-url="http://www.rainyleo.com/2016/09/20/Javascript-promise/" data-id="cjd8gh7kf00071o1npklees2y" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -192,7 +192,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/09/16/JavaScript_Event_Loop/" data-id="cjd689di80007471nujkydd4e" class="article-share-link">Share</a>
+      <a data-url="http://www.rainyleo.com/2016/09/16/JavaScript_Event_Loop/" data-id="cjd8gh7kb00051o1notms8v3n" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -236,7 +236,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/08/20/JavaScript_Object_Methods/" data-id="cjd689did0009471nk14kc6p7" class="article-share-link">Share</a>
+      <a data-url="http://www.rainyleo.com/2016/08/20/JavaScript_Object_Methods/" data-id="cjd8gh7kd00061o1ngldvrr1p" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -301,7 +301,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/08/15/Array-methods/" data-id="cjd689di20004471nxuupjq41" class="article-share-link">Share</a>
+      <a data-url="http://www.rainyleo.com/2016/08/15/Array-methods/" data-id="cjd8gh7jz00021o1nxhuezvcu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -346,11 +346,97 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2016/08/13/快捷键/" data-id="cjd689dj90010471n20pggm0f" class="article-share-link">Share</a>
+      <a data-url="http://www.rainyleo.com/2016/08/13/快捷键/" data-id="cjd8gh7lf00131o1nv8290grs" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/atom/">atom</a></li></ul>
 
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-图片预览和上传" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/03/04/图片预览和上传/" class="article-date">
+  <time datetime="2016-03-04T04:58:06.000Z" itemprop="datePublished">2016-03-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/04/图片预览和上传/">图片预览两种方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>常用图片预览有两种方式, 分别是 <code>FileReader</code> 和 <code>URL.createObjectURL()</code></p>
+<h3 id="FileReader"><a href="#FileReader" class="headerlink" title="FileReader"></a>FileReader</h3><p><code>FileReader</code> 对象可以异步读取电脑上的文件(或raw data buffers)内容, 使用 <code>File</code> 或 <code>Blob</code> 对象来指定读取的文件或数据.<br>File 对象可以从 <code>Filelist</code> 对象获取, Filelist 来源有: 1. 使用 <code>&lt;input&gt;</code> 让用户选择文件(<code>event.target.files</code>), 2. drag and drop时来自 <code>event.DataTransfer.files</code>. </p>
+<ol>
+<li>构造函数<br>FileReader()</li>
+<li>属性<br>FileReader.result, FileReader.error, FileReader.readyState</li>
+<li>事件<br>FileReader.onerror, FileReader.onload, FileReader.onloadstart, FileReader.onloadend, FileReader.onprogress<br>由于 FileReader 继承 EventTarget, 这些方法可以用 addEventListener监听</li>
+<li>方法<br>FileReader.abort()<br>FileReader.readAsArrayBuffer()<br>FileReader.readAsDataURL(): 从 Blob 读取内容, 完成时 <code>result</code> 属性包含文件数据的 <code>data:</code> URL<br>FileReader.readAsText(): 从 Blob 读取内容, 完成时 <code>result</code> 属性包含文件内容的字符串 </li>
+</ol>
+<h3 id="URL-createObjectURL"><a href="#URL-createObjectURL" class="headerlink" title="URL.createObjectURL()"></a>URL.createObjectURL()</h3><p>创建一个 URL 的 <code>DOMString</code>, URL 指向参数中对象(File 或 Blob 对象). URL的生命周期等同于 document<br>注意: 每次调用 <code>createObjectURL()</code>, 都会创建一个新的对象URL, 即使该对象已经创建过, 这些URL可以通过 <code>URL.revokeObjectURL()</code> 来进行释放</p>
+<p>Object URLs 也可以用来显示 pdf 或视频等其他浏览器能够显示的资源</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">id</span>=<span class="string">"preview"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Select an image to preview it:<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">accept</span>=<span class="string">"image/*"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"dimensions"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> fileInput = <span class="built_in">document</span>.querySelector(<span class="string">'input[type="file"]'</span>);</div><div class="line"><span class="keyword">let</span> preview = <span class="built_in">document</span>.getElementById(<span class="string">'preview'</span>);</div><div class="line"> </div><div class="line">fileInput.addEventListener(<span class="string">'change'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">    <span class="keyword">let</span> file = e.target.files[<span class="number">0</span>];</div><div class="line">    getImgFromFileReader(file);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// 1. 使用 FileReader</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getImgFromFileReader</span>(<span class="params">file</span>) </span>&#123;</div><div class="line">    <span class="keyword">let</span> reader = <span class="keyword">new</span> FileReader();</div><div class="line">    reader.readAsDataURL(file);</div><div class="line">    reader.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">let</span> url = <span class="keyword">this</span>.result;</div><div class="line">        preview.setAttribute(<span class="string">'src'</span>, url);</div><div class="line">    &#125;;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 2. 使用 ObjectUrl</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getImgFromObjectUrl</span>(<span class="params">file</span>) </span>&#123;</div><div class="line">    <span class="keyword">let</span> url = URL.createObjectURL(file);  </div><div class="line">    preview.setAttribute(<span class="string">'src'</span>, url);</div><div class="line">&#125;</div><div class="line"></div><div class="line">preview.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">window</span>.URL.revokeObjectURL(<span class="keyword">this</span>.src);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h2 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h2><table>
+<thead>
+<tr>
+<th></th>
+<th>createObjectURL</th>
+<th>readAsDataURL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>执行</td>
+<td>同步</td>
+<td>异步</td>
+</tr>
+<tr>
+<td>存储</td>
+<td>指针</td>
+<td>base64 payload</td>
+</tr>
+<tr>
+<td>兼容性</td>
+<td>ie10</td>
+<td>ie10</td>
+</tr>
+<tr>
+<td>大小</td>
+<td>blob limit(800mb 左右)</td>
+<td>10mb 左右</td>
+</tr>
+<tr>
+<td>类型</td>
+<td>object URL</td>
+<td>data uri</td>
+</tr>
+</tbody>
+</table>
+<p>使用 createObjectURL() 要比 FileReader 更快一点, 内存占用也更少. </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.rainyleo.com/2016/03/04/图片预览和上传/" data-id="cjd8gh7lc000y1o1neloi8jfo" class="article-share-link">Share</a>
+      
+      
     </footer>
   </div>
   
@@ -452,7 +538,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.rainyleo.com/2015/02/03/css-居中/" data-id="cjd68hubv00006n1n8ueid8rc" class="article-share-link">Share</a>
+      <a data-url="http://www.rainyleo.com/2015/02/03/css-居中/" data-id="cjd8gh7l7000q1o1n4t55topq" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li></ul>
@@ -490,7 +576,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
