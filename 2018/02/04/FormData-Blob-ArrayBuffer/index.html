@@ -3,14 +3,30 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2015 | rainyleo blog</title>
+  <title>FormData, Blob, ArrayBuffer | rainyleo blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="rainyleo blog">
-<meta property="og:url" content="http://www.rainyleo.com/archives/2015/index.html">
+  <meta name="description" content="FormDataFormData 接口可以很方便地创建表示表单字段和值的键值对, 并使用XMLHttpRequest的.send() 来发送. 它的格式和 编码类型 为 multipart/form-data 的一样
+
+构造函数new FormData (form? : HTMLFormElement)
+
+方法append()delete()entries()has()setvalues()">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FormData, Blob, ArrayBuffer">
+<meta property="og:url" content="http://www.rainyleo.com/2018/02/04/FormData-Blob-ArrayBuffer/index.html">
 <meta property="og:site_name" content="rainyleo blog">
+<meta property="og:description" content="FormDataFormData 接口可以很方便地创建表示表单字段和值的键值对, 并使用XMLHttpRequest的.send() 来发送. 它的格式和 编码类型 为 multipart/form-data 的一样
+
+构造函数new FormData (form? : HTMLFormElement)
+
+方法append()delete()entries()has()setvalues()">
+<meta property="og:updated_time" content="2018-02-04T10:01:06.721Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="rainyleo blog">
+<meta name="twitter:title" content="FormData, Blob, ArrayBuffer">
+<meta name="twitter:description" content="FormDataFormData 接口可以很方便地创建表示表单字段和值的键值对, 并使用XMLHttpRequest的.send() 来发送. 它的格式和 编码类型 为 multipart/form-data 的一样
+
+构造函数new FormData (form? : HTMLFormElement)
+
+方法append()delete()entries()has()setvalues()">
   
     <link rel="alternate" href="/atom.xml" title="rainyleo blog" type="application/atom+xml">
   
@@ -61,39 +77,81 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/02/03/css-居中/" class="archive-article-date">
-  <time datetime="2015-02-03T11:31:39.000Z" itemprop="datePublished">Feb 3</time>
+        <section id="main"><article id="post-FormData-Blob-ArrayBuffer" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/02/04/FormData-Blob-ArrayBuffer/" class="article-date">
+  <time datetime="2018-02-04T09:36:54.000Z" itemprop="datePublished">2018-02-04</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/02/03/css-居中/">css 居中</a>
+    <h1 class="article-title" itemprop="name">
+      FormData, Blob, ArrayBuffer
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="FormData"><a href="#FormData" class="headerlink" title="FormData"></a>FormData</h2><p>FormData 接口可以很方便地创建表示表单字段和值的键值对, 并使用<code>XMLHttpRequest的.send()</code> 来发送. 它的格式和 编码类型 为 <code>multipart/form-data</code> 的一样</p>
+<ol>
+<li><p>构造函数<br><code>new FormData (form? : HTMLFormElement)</code></p>
+</li>
+<li><p>方法<br><code>append()</code><br><code>delete()</code><br><code>entries()</code><br><code>has()</code><br><code>set</code><br><code>values()</code></p>
+</li>
+</ol>
+<h2 id="Blob"><a href="#Blob" class="headerlink" title="Blob"></a>Blob</h2><p>Blob 对象表示不可变的类似文件对象的原始数据。Blob 中的数据不一定是 JavaScript原生形式的。File 接口基于Blob，继承了 blob的功能并将其扩展使其支持用户系统上的文件。(Binary Large Object)</p>
+<p>使用 <code>Blob()</code> 构造函数可以从其他非 blob对象和数据构造一个Blob。要创建包含另一个 blob数据的子集 blob，可以使用 <code>slice()</code>方法。要获取用户文件系统上文件的 Blob对象，参考 File文档。</p>
+<ol>
+<li>构造函数</li>
+</ol>
+<p><code>Blob(blobParts[, options])</code><br>返回一个新创建的 Blob 对象，其内容由参数中给定的数组组成。</p>
+<ol>
+<li>属性</li>
+</ol>
+<p><code>Blob.size</code> 只读<br>Blob 对象中所包含数据的大小（字节）。<br><code>Blob.type</code> 只读<br>一个字符串，表明该 Blob对象所包含数据的 MIME类型。如果类型未知，则该值为空字符串。</p>
+<ol>
+<li>方法</li>
+</ol>
+<p><code>Blob.slice([start,[ end ,[contentType]]])</code><br>返回一个新的 Blob对象，包含了源 Blob对象中指定范围内的数据。<br>可用于文件分片上传</p>
+<ul>
+<li><p>使用 Blob 创建一个Object URL</p>
+</li>
+<li><p>从 Blob 中提取数据</p>
+</li>
+</ul>
+<p>从Blob中读取内容的唯一方法是使用 <code>FileReader</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> reader = <span class="keyword">new</span> FileReader();</div><div class="line">reader.addEventListener(<span class="string">"loadend"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">   <span class="comment">// reader.result 包含转化为类型数组的blob</span></div><div class="line">&#125;);</div><div class="line">reader.readAsArrayBuffer(blob);</div></pre></td></tr></table></figure>
+<h2 id="ArrayBuffer"><a href="#ArrayBuffer" class="headerlink" title="ArrayBuffer"></a>ArrayBuffer</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.rainyleo.com/2018/02/04/FormData-Blob-ArrayBuffer/" data-id="cjg7w5t4f0004v31nfmblhntx" class="article-share-link">Share</a>
+      
+      
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/03/06/Vue-vs-React/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Vue vs React</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 
 </section>
         
